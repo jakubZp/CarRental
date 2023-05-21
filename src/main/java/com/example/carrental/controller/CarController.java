@@ -11,7 +11,7 @@ import java.util.List;
 @RequestMapping("api/v1/cars")
 @AllArgsConstructor
 public class CarController {
-    CarService carService;
+    private final CarService carService;
 
     @GetMapping()
     public List<Car> getCars() {

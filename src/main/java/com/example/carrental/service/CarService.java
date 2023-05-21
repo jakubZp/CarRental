@@ -10,10 +10,10 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class CarService {
-    CarRepository carRepository;
+    private final CarRepository carRepository;
 
     public List<Car> getAllCars() {
-        return carRepository.findAll();
+        return carRepository.findAllCars();
     }
 
     public Car getSingleCar(long id) {
