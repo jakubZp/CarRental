@@ -2,6 +2,7 @@ package com.example.carrental.controller;
 
 import com.example.carrental.model.Person;
 import com.example.carrental.service.PersonService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,5 +32,11 @@ public class PersonController {
     @DeleteMapping("{id}")
     public void deletePerson(@PathVariable long id) {
         personService.deletePerson(id);
+    }
+
+    @PutMapping("{id}")
+    public Person updatePerson(@PathVariable long id,
+                               @RequestBody Person updatedPerson) {
+        return personService.updatePerson(id, updatedPerson);
     }
 }

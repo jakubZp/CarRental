@@ -32,4 +32,10 @@ public class CarController {
     public void deleteCar(@PathVariable long id) {
         carService.deleteCar(id);
     }
+
+    @PutMapping("/{id}")
+    public Car updateCar(@PathVariable long id,
+                          @RequestBody Car updatedCar) {
+        return carService.updateCar(id, updatedCar);
+    }
 }
