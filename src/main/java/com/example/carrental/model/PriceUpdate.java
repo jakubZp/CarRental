@@ -7,25 +7,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Entity(name = "Rental")
+@Entity(name = "price_update")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Rental {
+public class PriceUpdate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDateTime fromDate;
-    private LocalDateTime toDate;
-
+    private LocalDateTime updateDate;
+    private BigDecimal price;
     @ManyToOne
     @JsonIgnore
     private Car car;
-
-    @ManyToOne
-    @JsonIgnore
-    private Person person;
 }

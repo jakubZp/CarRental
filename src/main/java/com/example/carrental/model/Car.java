@@ -31,8 +31,12 @@ public class Car {
     private Integer productionYear;
     @Column(name = "actual_daily_price")
     private BigDecimal actualDailyPrice; // TODO table priceUpdate for price changes history, if actual price changes save old price as history
-
+//update wraz z dodaniem samochodu - pierwszy update ceny
     @OneToMany()
     @JoinColumn(name = "car_id")
     private List<Rental> carRents;
+
+    @OneToMany()
+    @JoinColumn(name = "car_id")
+    private List<PriceUpdate> priceUpdates;
 }
