@@ -21,7 +21,8 @@ public class RentalService {
     private PersonRepository personRepository;
 
     public List<Rental> getAllRentals() {
-        return rentalRepository.findAll();
+        return rentalRepository.findAllRentals();
+        //return rentalRepository.findAll();
     }
 
     public Rental addRental(RentalDTO rentalDTO) {

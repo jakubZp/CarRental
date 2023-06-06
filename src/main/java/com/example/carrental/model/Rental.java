@@ -21,11 +21,11 @@ public class Rental {
     private LocalDateTime fromDate;
     private LocalDateTime toDate;
 
-    @ManyToOne
-    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    //@JsonIgnore
     private Car car;
 
-    @ManyToOne
-    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    //@JsonIgnore
     private Person person;
 }

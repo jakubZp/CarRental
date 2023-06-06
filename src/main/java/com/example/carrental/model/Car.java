@@ -1,5 +1,6 @@
 package com.example.carrental.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,12 +32,10 @@ public class Car {
     private Integer productionYear;
     @Column(name = "actual_daily_price")
     private BigDecimal actualDailyPrice; // TODO table priceUpdate for price changes history, if actual price changes save old price as history
-//update wraz z dodaniem samochodu - pierwszy update ceny
-    @OneToMany()
-    @JoinColumn(name = "car_id")
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Rental> carRents;
 
-    @OneToMany()
-    @JoinColumn(name = "car_id")
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PriceUpdate> priceUpdates;
 }

@@ -31,10 +31,11 @@ public class CarService {
 
     @Transactional
     public Car addCar(Car car) {
-        PriceUpdate priceUpdate = new PriceUpdate();
-        priceUpdate.setPrice(car.getActualDailyPrice());
-        priceUpdate.setUpdateDate(LocalDateTime.now());
-        priceUpdate.setCar(car);
+        PriceUpdate priceUpdate = new PriceUpdate(
+                null, LocalDateTime.now(), car.getActualDailyPrice(), car);
+//        priceUpdate.setPrice(car.getActualDailyPrice());
+//        priceUpdate.setUpdateDate(LocalDateTime.now());
+//        priceUpdate.setCar(car);
         priceUpdateRepository.save(priceUpdate);
 
         return carRepository.save(car);

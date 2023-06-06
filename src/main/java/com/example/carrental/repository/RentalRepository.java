@@ -17,4 +17,9 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
             "          OR ?3 BETWEEN r.fromDate AND r.toDate" +
             "    AND r.car = ?1")
     List<Rental> findByCarAndDatesOverlap(Car c, LocalDateTime fromDate, LocalDateTime toDate);
+
+    @Query("select r from Rental r" +
+            " left join fetch r.car" +
+            " left join fetch r.person")
+    List<Rental> findAllRentals();
 }

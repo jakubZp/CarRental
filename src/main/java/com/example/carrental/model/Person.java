@@ -1,5 +1,6 @@
 package com.example.carrental.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,7 +33,8 @@ public class Person {
     private String email;
     private String password;
 
-    @OneToMany()
-    @JoinColumn(name = "person_id")
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    //@JoinColumn(name = "person_id")
     public List<Rental> personRents;
 }
