@@ -1,12 +1,17 @@
 package com.example.carrental.service;
 
+import com.example.carrental.controller.dto.PriceUpdateDTO;
 import com.example.carrental.model.Car;
 import com.example.carrental.model.Person;
+import com.example.carrental.model.PriceUpdate;
 import com.example.carrental.repository.CarRepository;
+import com.example.carrental.repository.PriceUpdateRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,6 +19,7 @@ import java.util.Objects;
 @AllArgsConstructor
 public class CarService {
     private final CarRepository carRepository;
+    private final PriceUpdateRepository priceUpdateRepository;
 
     public List<Car> getAllCars() {
         return carRepository.findAllCars();
@@ -23,7 +29,15 @@ public class CarService {
         return carRepository.findById(id).orElseThrow();
     }
 
+    @Transactional
     public Car addCar(Car car) {
+        PriceUpdate priceUpdate = new PriceUpdate(
+                null, LocalDateTime.now(), car.getActualDailyPrice(), car);
+//        priceUpdate.setPrice(car.getActualDailyPrice());
+//        priceUpdate.setUpdateDate(LocalDateTime.now());
+//        priceUpdate.setCar(car);
+        priceUpdateRepository.save(priceUpdate);
+
         return carRepository.save(car);
     }
 
@@ -31,6 +45,7 @@ public class CarService {
         carRepository.deleteById(id);
     }
 
+    @Transactional
     public Car updateCar(long id, Car updatedCar) {
         Car c = carRepository.findById(id).orElseThrow(() -> {
             throw new IllegalStateException("car with id \" + id + \" does not exists! Cannot update.");
@@ -54,6 +69,12 @@ public class CarService {
         BigDecimal newActualDailyPrice = updatedCar.getActualDailyPrice();
         if(newActualDailyPrice != null && !Objects.equals(c.getActualDailyPrice(), newActualDailyPrice)) {
             c.setActualDailyPrice(newActualDailyPrice);
+
+            PriceUpdate priceUpdate = new PriceUpdate();
+            priceUpdate.setPrice(newActualDailyPrice);
+            priceUpdate.setUpdateDate(LocalDateTime.now());
+            priceUpdate.setCar(c);
+            priceUpdateRepository.save(priceUpdate);
         }
 
         return c;
