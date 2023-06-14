@@ -1,6 +1,7 @@
 package com.example.carrental.controller;
 
 import com.example.carrental.controller.dto.RentalDTO;
+import com.example.carrental.controller.mapper.RentalDTOMapper;
 import com.example.carrental.model.Car;
 import com.example.carrental.model.Rental;
 import com.example.carrental.service.RentalService;
@@ -9,35 +10,31 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("api/v1/rentals")
 public class RentalController {
-    private RentalService rentalService;
+
+    private final RentalService rentalService;
+    private final RentalDTOMapper rentalDTOMapper;
 
     @GetMapping()
     public List<RentalDTO> getRentals() {
-        List <Rental> rentals = rentalService.getAllRentals();
-        List<RentalDTO> rentalDTOs = new ArrayList<>();
+        List <RentalDTO> rentals = rentalService.getAllRentals()
+                .stream()
+                .map(rentalDTOMapper)
+                .collect(Collectors.toList());
 
-        for (Rental rental : rentals) {
-            RentalDTO rentalDTO = new RentalDTO(
-                    rental.getId(),
-                    rental.getFromDate(),
-                    rental.getToDate(),
-                    rental.getCar().getId(),
-                    rental.getPerson().getId()
-            );
-            rentalDTOs.add(rentalDTO);
-        }
-
-        return rentalDTOs;
+        return rentals;
     }
 
     @GetMapping("/{id}")
-    public Rental getSingleRental(@PathVariable long id) {
-        return rentalService.getSingleRental(id);
+    public RentalDTO getSingleRental(@PathVariable long id) {
+        return rentalDTOMapper.apply(
+                rentalService.getSingleRental(id)
+        );
     }
 
     @PostMapping

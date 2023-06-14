@@ -9,12 +9,12 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Entity(name = "Person")
+@Entity(name = "customer")
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
-public class Person {
+public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,8 +33,7 @@ public class Person {
     private String email;
     private String password;
 
-    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    //@JoinColumn(name = "person_id")
-    public List<Rental> personRents;
+    public List<Rental> customerRents;
 }

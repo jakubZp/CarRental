@@ -1,7 +1,7 @@
 package com.example.carrental.repository;
 
 import com.example.carrental.model.Car;
-import com.example.carrental.model.Person;
+import com.example.carrental.model.Customer;
 import com.example.carrental.model.Rental;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,13 +24,13 @@ class RentalRepositoryTest {
     private RentalRepository underTest;
 
     private Car car;
-    private Person person;
+    private Customer customer;
 
     @BeforeEach
     void setup() {
         // TODO mockito.any() or just mock it ??
         car = new Car(1L, "toyota", "yaris", 2023, new BigDecimal(100), null, null);
-        person = new Person(1L, "Tom", "Smith", "123456789", "Warsaw", "tom@gmail.com", ".ZB~q1%53sjp", null);
+        customer = new Customer(1L, "Tom", "Smith", "123456789", "Warsaw", "tom@gmail.com", ".ZB~q1%53sjp", null);
     }
 
     @AfterEach
@@ -45,7 +45,7 @@ class RentalRepositoryTest {
                 LocalDateTime.parse("2023-05-10T10:00"),
                 LocalDateTime.parse("2023-05-20T10:00"),
                 car,
-                person);
+                customer);
         underTest.save(r1);
 
         // when
@@ -65,7 +65,7 @@ class RentalRepositoryTest {
         Rental r1 = new Rental(1L,
                 LocalDateTime.parse("2023-05-10T10:00"),
                 LocalDateTime.parse("2023-05-20T10:00"),
-                car, person);
+                car, customer);
         underTest.save(r1);
 
         // when
@@ -85,7 +85,7 @@ class RentalRepositoryTest {
         Rental r1 = new Rental(1L,
                 LocalDateTime.parse("2023-05-10T10:00"),
                 LocalDateTime.parse("2023-05-20T10:00"),
-                car, person);
+                car, customer);
         underTest.save(r1);
 
         // when
@@ -105,7 +105,7 @@ class RentalRepositoryTest {
         Rental r1 = new Rental(1L,
                 LocalDateTime.parse("2023-05-10T10:00"),
                 LocalDateTime.parse("2023-05-20T10:00"),
-                car, person);
+                car, customer);
         underTest.save(r1);
 
         // when
