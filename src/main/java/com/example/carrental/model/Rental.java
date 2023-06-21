@@ -20,9 +20,9 @@ public class Rental {
     private LocalDateTime fromDate;
     private LocalDateTime toDate;
 
-    @ManyToOne()
+    @ManyToOne
     private Car car;
 
-    @ManyToOne()
+    @ManyToOne
     private Customer customer;
 }

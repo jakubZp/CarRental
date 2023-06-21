@@ -10,7 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
-    Optional<Customer> findCustomerByEmail(String email);
 
     @Query("select c from customer c" +
             " left join fetch c.customerRents")

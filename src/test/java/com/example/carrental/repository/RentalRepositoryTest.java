@@ -3,6 +3,7 @@ package com.example.carrental.repository;
 import com.example.carrental.model.Car;
 import com.example.carrental.model.Customer;
 import com.example.carrental.model.Rental;
+import com.example.carrental.model.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,15 +23,20 @@ class RentalRepositoryTest {
 
     @Autowired
     private RentalRepository underTest;
+    @Autowired
+    private CustomerRepository customerRepository;
 
     private Car car;
+    private User user;
     private Customer customer;
 
     @BeforeEach
     void setup() {
-        // TODO mockito.any() or just mock it ??
         car = new Car(1L, "toyota", "yaris", 2023, new BigDecimal(100), null, null);
-        customer = new Customer(1L, "Tom", "Smith", "123456789", "Warsaw", "tom@gmail.com", ".ZB~q1%53sjp", null);
+        user = new User(1L, null, null, "Tom", "Smith", "123456789", "Warsaw", "tom@gmail.com", "zaq1");
+        customer = new Customer();
+        customer.setUser(user);
+        customerRepository.save(customer);
     }
 
     @AfterEach

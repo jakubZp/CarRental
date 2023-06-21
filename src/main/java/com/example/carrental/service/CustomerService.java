@@ -1,7 +1,9 @@
 package com.example.carrental.service;
 
 import com.example.carrental.model.Customer;
+import com.example.carrental.model.User;
 import com.example.carrental.repository.CustomerRepository;
+import com.example.carrental.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +15,9 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class CustomerService {
+
     private final CustomerRepository customerRepository;
+    private final UserRepository userRepository;
 
     public List<Customer> getAllCustomers() {
         return customerRepository.findAllCustomers();
@@ -24,11 +28,12 @@ public class CustomerService {
     }
 
     public Customer addCustomer(Customer customer) {
-        Optional<Customer> p = customerRepository.findCustomerByEmail(customer.getEmail());
-        if(p.isPresent()) {
+        Optional<User> existingUser = userRepository.findUserByEmail(customer.getUser().getEmail());
+        if(existingUser.isPresent()) {
             throw new IllegalStateException("email is already taken");
         }
-        return customerRepository.save(customer);
+        userRepository.save(customer.getUser()); // TODO do not sure if it should be here - single responsibility
+        return customerRepository.save(customer); // user is saved automatically because of Cascade.ALL in relation??? is not
     }
 
     public void deleteCustomer(long id) {
@@ -39,40 +44,42 @@ public class CustomerService {
     }
 
     @Transactional
-    public Customer updateCustomer(long id, Customer updatedCustomer) {
-        Customer c = customerRepository.findById(id).orElseThrow(() ->
+    public Customer updateCustomer(long id, Customer newCustomer) {
+        Customer currentCustomer = customerRepository.findById(id).orElseThrow(() ->
                     new IllegalStateException("customer with id " + id + " does not exists! Cannot update."));
 
-        //TODO new function isValid to replace "repeated" code? or something similar
-        String newFirstName = updatedCustomer.getFirstName();
-        if(newFirstName != null && newFirstName.length() > 0 && !Objects.equals(c.getFirstName(), newFirstName)) {
-            c.setFirstName(newFirstName);
+        User updatedUser = newCustomer.getUser();
+        User user = currentCustomer.getUser();
+
+        String newFirstName = updatedUser.getFirstName();
+        if(newFirstName != null && newFirstName.length() > 0 && !Objects.equals(user.getFirstName(), newFirstName)) {
+            user.setFirstName(newFirstName);
         }
 
-        String newLastName = updatedCustomer.getLastName();
-        if(newLastName != null && newLastName.length() > 0 && !Objects.equals(c.getLastName(), newLastName)) {
-            c.setLastName(newLastName);
+        String newLastName = updatedUser.getLastName();
+        if(newLastName != null && newLastName.length() > 0 && !Objects.equals(user.getLastName(), newLastName)) {
+            user.setLastName(newLastName);
         }
 
-        String newPhoneNumber = updatedCustomer.getPhoneNumber();
-        if(newPhoneNumber != null && newPhoneNumber.length() > 0 && !Objects.equals(c.getPhoneNumber(), newPhoneNumber)) {
-            c.setPhoneNumber(newPhoneNumber);
+        String newPhoneNumber = updatedUser.getPhoneNumber();
+        if(newPhoneNumber != null && newPhoneNumber.length() > 0 && !Objects.equals(user.getPhoneNumber(), newPhoneNumber)) {
+            user.setPhoneNumber(newPhoneNumber);
         }
 
-        String newAddress = updatedCustomer.getAddress();
-        if(newAddress != null && newAddress.length() > 0 && !Objects.equals(c.getAddress(), newAddress)) {
-            c.setAddress(newAddress);
+        String newAddress = updatedUser.getAddress();
+        if(newAddress != null && newAddress.length() > 0 && !Objects.equals(user.getAddress(), newAddress)) {
+            user.setAddress(newAddress);
         }
 
-        String newEmail = updatedCustomer.getEmail();
-        if(newEmail != null && newEmail.length() > 0 && !Objects.equals(c.getEmail(), newEmail)) {
-            Optional<Customer> customerByEmail = customerRepository.findCustomerByEmail(newEmail);
-            if(customerByEmail.isPresent()) {
+        String newEmail = updatedUser.getEmail();
+        if(newEmail != null && newEmail.length() > 0 && !Objects.equals(user.getEmail(), newEmail)) {
+            Optional<User> userByEmail = userRepository.findUserByEmail(newEmail);
+            if(userByEmail.isPresent()) {
                 throw new IllegalStateException("email is already taken");
             }
-            c.setEmail(newEmail);
+            user.setEmail(newEmail);
         }
 
-        return c;
+        return currentCustomer;
     }
 }

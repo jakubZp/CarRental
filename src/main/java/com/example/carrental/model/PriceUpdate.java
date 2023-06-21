@@ -21,7 +21,7 @@ public class PriceUpdate {
     private Long id;
     private LocalDateTime updateDate;
     private BigDecimal price;
+
     @ManyToOne
-    //@JsonIgnore
     private Car car;
 }

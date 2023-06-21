@@ -1,20 +1,18 @@
 package com.example.carrental.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
-@Entity(name = "customer")
+@Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
-@Getter
-public class Customer {
+public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,7 +21,9 @@ public class Customer {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    @JsonIgnore
-    public List<Rental> customerRents;
+    private BigDecimal salary;
+    private String position;
+    private LocalDateTime employedFrom;
+    @Column(name = "employed_to", nullable = true)
+    private LocalDateTime employedTo;
 }
