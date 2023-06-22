@@ -22,7 +22,7 @@ INSERT INTO customer (user_id) VALUES (3);
 INSERT INTO customer (user_id) VALUES (4);
 INSERT INTO customer (user_id) VALUES (5);
 
-INSERT INTO _user (first_name, last_name, phone_number, address, email, password) values ('Jakub', 'Creighton', '666123009', 'Warszawa, Niepodległości 32', 'jakub.creighton@carrental.com', 'hl123JP!...!');
+INSERT INTO _user (first_name, last_name, phone_number, address, email, password, role) values ('Jakub', 'Creighton', '666123009', 'Warszawa, Niepodległości 32', 'jakub.creighton@carrental.com', 'hl123JP!...!', 'EMPLOYEE');
 INSERT INTO employee (user_id) values (6);
 
 INSERT INTO rental (from_date, to_date, car_id, customer_id) values ('2023-03-19 10:00', '2023-03-27 10:00', 1, 1);

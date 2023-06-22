@@ -2,10 +2,7 @@ package com.example.carrental.service;
 
 import com.example.carrental.controller.dto.RentalDTO;
 import com.example.carrental.controller.mapper.RentalDTOMapper;
-import com.example.carrental.model.Car;
-import com.example.carrental.model.Customer;
-import com.example.carrental.model.Rental;
-import com.example.carrental.model.User;
+import com.example.carrental.model.*;
 import com.example.carrental.repository.CarRepository;
 import com.example.carrental.repository.CustomerRepository;
 import com.example.carrental.repository.RentalRepository;
@@ -38,7 +35,7 @@ class RentalServiceTest {
     void setup() {
         underTest = new RentalService(rentalRepository, carRepository, customerRepository);
         car = new Car(1L, "toyota", "yaris", 2023, new BigDecimal(100), null, null);
-        user = new User(1L, null, null, "Tom", "Smith", "123456789", "Warsaw", "tom@gmail.com", "zaq1");
+        user = new User(1L, null, null, "Tom", "Smith", "123456789", "Warsaw", "tom@gmail.com", "zaq1", Role.CUSTOMER);
         customer = new Customer();
         customer.setUser(user);
         rentalDTOMapper = new RentalDTOMapper();

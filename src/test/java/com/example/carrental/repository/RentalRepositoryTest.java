@@ -1,9 +1,6 @@
 package com.example.carrental.repository;
 
-import com.example.carrental.model.Car;
-import com.example.carrental.model.Customer;
-import com.example.carrental.model.Rental;
-import com.example.carrental.model.User;
+import com.example.carrental.model.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +30,7 @@ class RentalRepositoryTest {
     @BeforeEach
     void setup() {
         car = new Car(1L, "toyota", "yaris", 2023, new BigDecimal(100), null, null);
-        user = new User(1L, null, null, "Tom", "Smith", "123456789", "Warsaw", "tom@gmail.com", "zaq1");
+        user = new User(1L, null, null, "Tom", "Smith", "123456789", "Warsaw", "tom@gmail.com", "zaq1", Role.CUSTOMER);
         customer = new Customer();
         customer.setUser(user);
         customerRepository.save(customer);
