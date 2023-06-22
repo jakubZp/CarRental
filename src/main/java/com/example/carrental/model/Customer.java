@@ -7,21 +7,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.List;
 
-@Entity(name = "price_update")
-@Getter
-@Setter
+@Entity(name = "customer")
 @AllArgsConstructor
 @NoArgsConstructor
-public class PriceUpdate {
+@Setter
+@Getter
+public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDateTime updateDate;
-    private BigDecimal price;
 
-    @ManyToOne
-    private Car car;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @JsonIgnore
+    public List<Rental> customerRents;
 }

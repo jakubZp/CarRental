@@ -22,8 +22,7 @@ public class PriceUpdateService {
     }
 
     public PriceUpdate addPriceUpdate(PriceUpdateDTO priceUpdate) {
-        PriceUpdate newPrice = new PriceUpdate();
-        Long carId = priceUpdate.getCarId();;
+        Long carId = priceUpdate.getCarId();
         Car c = carRepository.findById(carId).orElseThrow(() -> {
             throw new IllegalStateException("car with id " + carId + " does not exists");
         });
@@ -32,9 +31,11 @@ public class PriceUpdateService {
             throw new IllegalStateException("new price is same as actual price of car " + carId);
         }
 
-        newPrice.setCar(c);
-        newPrice.setUpdateDate(priceUpdate.getUpdateDate());
-        newPrice.setPrice(priceUpdate.getPrice());
+        PriceUpdate newPrice = new PriceUpdate(
+                null,
+                priceUpdate.getUpdateDate(),
+                priceUpdate.getPrice(),
+                c);
 
         c.getPriceUpdates().add(newPrice);
 

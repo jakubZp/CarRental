@@ -1,8 +1,6 @@
 package com.example.carrental.service;
 
-import com.example.carrental.controller.dto.PriceUpdateDTO;
 import com.example.carrental.model.Car;
-import com.example.carrental.model.Person;
 import com.example.carrental.model.PriceUpdate;
 import com.example.carrental.repository.CarRepository;
 import com.example.carrental.repository.PriceUpdateRepository;
@@ -70,10 +68,10 @@ public class CarService {
         if(newActualDailyPrice != null && !Objects.equals(c.getActualDailyPrice(), newActualDailyPrice)) {
             c.setActualDailyPrice(newActualDailyPrice);
 
-            PriceUpdate priceUpdate = new PriceUpdate();
-            priceUpdate.setPrice(newActualDailyPrice);
-            priceUpdate.setUpdateDate(LocalDateTime.now());
-            priceUpdate.setCar(c);
+            PriceUpdate priceUpdate = new PriceUpdate(null, LocalDateTime.now(), newActualDailyPrice, c);
+//            priceUpdate.setPrice(newActualDailyPrice);
+//            priceUpdate.setUpdateDate(LocalDateTime.now());
+//            priceUpdate.setCar(c);
             priceUpdateRepository.save(priceUpdate);
         }
 

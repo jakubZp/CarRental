@@ -9,9 +9,9 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 public class RentalDTO {
-    Long rentalId;
-    LocalDateTime fromDate;
-    LocalDateTime toDate;
-    Long carId;
-    Long personId;
+    private Long rentalId;
+    private LocalDateTime fromDate;
+    private LocalDateTime toDate;
+    private Long carId;
+    private Long customerId;
 }

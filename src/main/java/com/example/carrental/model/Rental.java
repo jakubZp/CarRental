@@ -1,6 +1,5 @@
 package com.example.carrental.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,11 +20,9 @@ public class Rental {
     private LocalDateTime fromDate;
     private LocalDateTime toDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    //@JsonIgnore
+    @ManyToOne
     private Car car;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    //@JsonIgnore
-    private Person person;
+    @ManyToOne
+    private Customer customer;
 }

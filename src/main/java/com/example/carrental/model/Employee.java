@@ -1,27 +1,29 @@
 package com.example.carrental.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Entity(name = "price_update")
-@Getter
-@Setter
+@Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PriceUpdate {
+public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDateTime updateDate;
-    private BigDecimal price;
 
-    @ManyToOne
-    private Car car;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    private BigDecimal salary;
+    private String position;
+    private LocalDateTime employedFrom;
+    @Column(name = "employed_to", nullable = true)
+    private LocalDateTime employedTo;
 }
