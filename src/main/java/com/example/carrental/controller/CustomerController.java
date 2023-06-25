@@ -4,6 +4,7 @@ import com.example.carrental.model.Customer;
 import com.example.carrental.model.User;
 import com.example.carrental.service.CustomerService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

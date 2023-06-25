@@ -6,6 +6,7 @@ import com.example.carrental.repository.CarRepository;
 import com.example.carrental.repository.PriceUpdateRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -16,6 +17,7 @@ import java.util.Objects;
 @Service
 @AllArgsConstructor
 public class CarService {
+
     private final CarRepository carRepository;
     private final PriceUpdateRepository priceUpdateRepository;
 
@@ -27,22 +29,22 @@ public class CarService {
         return carRepository.findById(id).orElseThrow();
     }
 
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     @Transactional
     public Car addCar(Car car) {
         PriceUpdate priceUpdate = new PriceUpdate(
                 null, LocalDateTime.now(), car.getActualDailyPrice(), car);
-//        priceUpdate.setPrice(car.getActualDailyPrice());
-//        priceUpdate.setUpdateDate(LocalDateTime.now());
-//        priceUpdate.setCar(car);
         priceUpdateRepository.save(priceUpdate);
 
         return carRepository.save(car);
     }
 
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public void deleteCar(long id) {
         carRepository.deleteById(id);
     }
 
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     @Transactional
     public Car updateCar(long id, Car updatedCar) {
         Car c = carRepository.findById(id).orElseThrow(() -> {
@@ -69,9 +71,6 @@ public class CarService {
             c.setActualDailyPrice(newActualDailyPrice);
 
             PriceUpdate priceUpdate = new PriceUpdate(null, LocalDateTime.now(), newActualDailyPrice, c);
-//            priceUpdate.setPrice(newActualDailyPrice);
-//            priceUpdate.setUpdateDate(LocalDateTime.now());
-//            priceUpdate.setCar(c);
             priceUpdateRepository.save(priceUpdate);
         }
 

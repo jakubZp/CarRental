@@ -8,6 +8,7 @@ import com.example.carrental.repository.CarRepository;
 import com.example.carrental.repository.CustomerRepository;
 import com.example.carrental.repository.RentalRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,14 +17,17 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class RentalService {
+
     private RentalRepository rentalRepository;
     private CarRepository carRepository;
     private CustomerRepository customerRepository;
 
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'ADMIN')")
     public List<Rental> getAllRentals() {
         return rentalRepository.findAllRentals();
     }
 
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'ADMIN')")
     public Rental getSingleRental(long id) {
         return rentalRepository.findById(id).orElseThrow(() -> {
             throw new IllegalStateException("rental with id "+ id + " does not exists");

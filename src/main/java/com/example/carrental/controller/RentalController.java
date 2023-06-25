@@ -6,6 +6,7 @@ import com.example.carrental.model.Car;
 import com.example.carrental.model.Rental;
 import com.example.carrental.service.RentalService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class RentalController {
         return rentalService.addRental(rentalDTO);
     }
 
+    @PreAuthorize("hasRole('EMPLOYEE')")
     @DeleteMapping("/{id}")
     public void deleteRental(@PathVariable long id) {
         rentalService.deleteRental(id);

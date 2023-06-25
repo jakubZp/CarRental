@@ -6,6 +6,7 @@ import com.example.carrental.model.PriceUpdate;
 import com.example.carrental.repository.CarRepository;
 import com.example.carrental.repository.PriceUpdateRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,13 +15,16 @@ import java.util.Objects;
 @Service
 @AllArgsConstructor
 public class PriceUpdateService {
+
     private final PriceUpdateRepository priceUpdateRepository;
     private final CarRepository carRepository;
 
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'ADMIN')")
     public List<PriceUpdate> getPriceUpdates() {
         return priceUpdateRepository.findAll();
     }
 
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'ADMIN')")
     public PriceUpdate addPriceUpdate(PriceUpdateDTO priceUpdate) {
         Long carId = priceUpdate.getCarId();
         Car c = carRepository.findById(carId).orElseThrow(() -> {
