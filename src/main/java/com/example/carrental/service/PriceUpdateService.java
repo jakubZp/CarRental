@@ -9,8 +9,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -44,5 +47,10 @@ public class PriceUpdateService {
         c.getPriceUpdates().add(newPrice);
 
         return priceUpdateRepository.save(newPrice);
+    }
+
+    public Optional<BigDecimal> findPriceOnDate(Long carId, LocalDateTime date) {
+        return priceUpdateRepository.findFirstByCar_IdAndUpdateDateBeforeOrderByUpdateDateDesc(carId, date)
+                .map(PriceUpdate::getPrice);
     }
 }

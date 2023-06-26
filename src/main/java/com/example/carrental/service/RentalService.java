@@ -8,6 +8,7 @@ import com.example.carrental.repository.CarRepository;
 import com.example.carrental.repository.CustomerRepository;
 import com.example.carrental.repository.RentalRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -61,6 +62,7 @@ public class RentalService {
         return rentalRepository.save(rental);
     }
 
+    @PreAuthorize("hasRole('EMPLOYEE')") //|| (#id == authentication.principal.customer.id && @rentalRepository.findById(#id).orElse(null).getFromDate().isAfter(LocalDateTime.now())) ")// TODO if user is owner of this rental and fromDate isAfter now we can delete rental
     public void deleteRental(long id) {
         if(!rentalRepository.existsById(id)){
             throw new IllegalStateException("rental with id " + id + " does not exists");
@@ -68,4 +70,9 @@ public class RentalService {
 
         rentalRepository.deleteById(id);
     }
+
+    public List<Rental> getRentalsBetweenDates(LocalDateTime fromDate, LocalDateTime toDate) {
+        return rentalRepository.findByFromDateBetween(fromDate, toDate);
+    }
+
 }

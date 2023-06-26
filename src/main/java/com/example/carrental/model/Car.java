@@ -31,7 +31,7 @@ public class Car {
     @Column(name = "production_year")
     private Integer productionYear;
     @Column(name = "actual_daily_price")
-    private BigDecimal actualDailyPrice; // TODO table priceUpdate for price changes history, if actual price changes save old price as history
+    private BigDecimal actualDailyPrice;
 
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore

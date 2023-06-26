@@ -26,7 +26,7 @@ public class SecurityConfiguration {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/v1/auth/**", "/api/v1/cars/**")
+                .requestMatchers("/api/v1/auth/**", "/api/v1/cars/**", "/swagger-ui/**")
                 .permitAll()
                 .requestMatchers("api/v1/priceupdates")
                 .hasAnyAuthority("EMPLOYEE", "ADMIN")

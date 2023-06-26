@@ -4,11 +4,11 @@ INSERT INTO car (brand, model, production_year, actual_daily_price) values ('vol
 INSERT INTO car (brand, model, production_year, actual_daily_price) values ('toyota', 'yaris', 2021, 110);
 INSERT INTO car (brand, model, production_year, actual_daily_price) values ('volkswagen', 'golf', 2018, 80);
 
-INSERT INTO price_update (price, update_date, car_id) VALUES (100, '2023-05-23 11:00', 1);
-INSERT INTO price_update (price, update_date, car_id) VALUES (250, '2023-05-23 11:00', 2);
-INSERT INTO price_update (price, update_date, car_id) VALUES (150, '2023-05-23 11:00', 3);
-INSERT INTO price_update (price, update_date, car_id) VALUES (110, '2023-05-23 11:00', 4);
-INSERT INTO price_update (price, update_date, car_id) VALUES (80, '2023-05-23 11:00', 5);
+INSERT INTO price_update (price, update_date, car_id) VALUES (100, '2023-02-23 11:00', 1);
+INSERT INTO price_update (price, update_date, car_id) VALUES (250, '2023-02-23 11:00', 2);
+INSERT INTO price_update (price, update_date, car_id) VALUES (150, '2023-02-23 11:00', 3);
+INSERT INTO price_update (price, update_date, car_id) VALUES (110, '2023-02-23 11:00', 4);
+INSERT INTO price_update (price, update_date, car_id) VALUES (80, '2023-02-23 11:00', 5);
 
 INSERT INTO _user (first_name, last_name, phone_number, address, email, password) values ('Jan', 'Kowalski', '123456789', 'Warszawa, Emilii Plater 24', 'jan.kowalski@gmail.com', 'zaq12wsx');
 INSERT INTO _user (first_name, last_name, phone_number, address, email, password) values ('Piotr', 'Nowak', '111222333', 'Warszawa, Niepodległości 44', 'piotr.nowak@gmail.com', '12345');
