@@ -26,7 +26,9 @@ public class CarService {
     }
 
     public Car getSingleCar(long id) {
-        return carRepository.findById(id).orElseThrow();
+        return carRepository.findById(id).orElseThrow(
+                () -> new IllegalStateException("car with id " + id + " does not exists!")
+        );
     }
 
     @PreAuthorize("hasAuthority('EMPLOYEE')")
@@ -48,7 +50,7 @@ public class CarService {
     @Transactional
     public Car updateCar(long id, Car updatedCar) {
         Car c = carRepository.findById(id).orElseThrow(() -> {
-            throw new IllegalStateException("car with id \" + id + \" does not exists! Cannot update.");
+            throw new IllegalStateException("car with id " + id + " does not exists! Cannot update.");
         });
 
         String newBrand = updatedCar.getBrand();

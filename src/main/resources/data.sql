@@ -10,8 +10,12 @@ INSERT INTO price_update (price, update_date, car_id) VALUES (150, '2023-02-23 1
 INSERT INTO price_update (price, update_date, car_id) VALUES (110, '2023-02-23 11:00', 4);
 INSERT INTO price_update (price, update_date, car_id) VALUES (80, '2023-02-23 11:00', 5);
 
-INSERT INTO _user (first_name, last_name, phone_number, address, email, password) values ('Jan', 'Kowalski', '123456789', 'Warszawa, Emilii Plater 24', 'jan.kowalski@gmail.com', 'zaq12wsx');
-INSERT INTO _user (first_name, last_name, phone_number, address, email, password) values ('Piotr', 'Nowak', '111222333', 'Warszawa, Niepodległości 44', 'piotr.nowak@gmail.com', '12345');
+-- INSERT INTO _user (first_name, last_name, phone_number, address, email, password, role) values ('Jan', 'Kowalski', '123456789', 'Warszawa, Emilii Plater 24', 'jan.kowalski@gmail.com', crypt('zaq12wsx', gen_salt('bf')), 'CUSTOMER');
+-- INSERT INTO _user (first_name, last_name, phone_number, address, email, password, role) values ('Piotr', 'Nowak', '111222333', 'Warszawa, Niepodległości 44', 'piotr.nowak@gmail.com',  crypt('12345', gen_salt('bf')), 'CUSTOMER');
+--TODO trigger in database for encrypting password after insert/update
+INSERT INTO _user (first_name, last_name, phone_number, address, email, password, role) values ('Jan', 'Kowalski', '123456789', 'Warszawa, Emilii Plater 24', 'jan.kowalski@gmail.com', 'zaq12wsx', 'CUSTOMER');
+INSERT INTO _user (first_name, last_name, phone_number, address, email, password, role) values ('Piotr', 'Nowak', '111222333', 'Warszawa, Niepodległości 44', 'piotr.nowak@gmail.com',  '12345', 'CUSTOMER');
+
 INSERT INTO _user (first_name, last_name, phone_number, address, email, password) values ('Karolina', 'Wójcik', '987654321', 'Gdańsk, 3 Maja 56', 'karolina.wojcik@o2.pl', 'wsxcde3');
 INSERT INTO _user (first_name, last_name, phone_number, address, email, password) values ('Oskar', 'Stankowski', '666999777', 'Warszawa, Sienkiewicza 25', 'oskar.stan@gmail.com', '12345');
 INSERT INTO _user (first_name, last_name, phone_number, address, email, password) values ('Paulina', 'Nowak', '801802803', 'Pruszków, Batorego 33', 'paula.nowak@protonmail.com', 'AwX0!~lmn ..;');
@@ -23,7 +27,7 @@ INSERT INTO customer (user_id) VALUES (4);
 INSERT INTO customer (user_id) VALUES (5);
 
 INSERT INTO _user (first_name, last_name, phone_number, address, email, password, role) values ('Jakub', 'Creighton', '666123009', 'Warszawa, Niepodległości 32', 'jakub.creighton@carrental.com', 'hl123JP!...!', 'EMPLOYEE');
-INSERT INTO employee (user_id) values (6);
+INSERT INTO employee (user_id, employed_from, salary) values (6, '2023-06-24', 4000);
 
 INSERT INTO rental (from_date, to_date, car_id, customer_id) values ('2023-03-19 10:00', '2023-03-27 10:00', 1, 1);
 INSERT INTO rental (from_date, to_date, car_id, customer_id) values ('2023-03-29 10:00', '2023-04-04 10:00', 1, 5);

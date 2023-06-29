@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -88,7 +87,7 @@ public class ReportPDFService {
         document.add(table);
     }
 
-    private BigDecimal calculateEarning(Rental r) {
+    public BigDecimal calculateEarning(Rental r) {
         BigDecimal result;
         long days = Duration.between(r.getFromDate(), r.getToDate()).toDays();
         Optional<BigDecimal> priceOnStartingDay = priceUpdateService.findPriceOnDate(r.getCar().getId(), r.getFromDate());

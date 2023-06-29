@@ -48,6 +48,7 @@ public class CustomerService {
     }
 
     @Transactional
+    @PreAuthorize("#id == authentication.principal.customer.id || hasAuthority('EMPLOYEE')")
     public Customer updateCustomer(long id, Customer newCustomer) {
         Customer currentCustomer = customerRepository.findById(id).orElseThrow(() ->
                     new IllegalStateException("customer with id " + id + " does not exists! Cannot update."));
