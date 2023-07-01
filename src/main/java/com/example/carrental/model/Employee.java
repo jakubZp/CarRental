@@ -24,6 +24,6 @@ public class Employee {
     private BigDecimal salary;
     private String position;
     private LocalDateTime employedFrom;
-    @Column(name = "employed_to", nullable = true)
+    @Column(name = "employed_to")
     private LocalDateTime employedTo;
 }

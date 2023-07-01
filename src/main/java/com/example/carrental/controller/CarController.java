@@ -3,6 +3,7 @@ package com.example.carrental.controller;
 import com.example.carrental.model.Car;
 import com.example.carrental.service.CarService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

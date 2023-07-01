@@ -5,6 +5,7 @@ import com.example.carrental.controller.mapper.PriceUpdateDTOMapper;
 import com.example.carrental.model.PriceUpdate;
 import com.example.carrental.service.PriceUpdateService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class PriceUpdateController {
                 .collect(Collectors.toList());
     }
 
+    @PreAuthorize("hasRole('EMPLOYEE')")
     @PostMapping
     public PriceUpdate addPriceUpdate(@RequestBody PriceUpdateDTO priceUpdate) {
         return priceUpdateService.addPriceUpdate(priceUpdate);

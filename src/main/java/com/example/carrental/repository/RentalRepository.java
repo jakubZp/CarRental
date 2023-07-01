@@ -22,4 +22,6 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
             " left join fetch r.car" +
             " left join fetch r.customer")
     List<Rental> findAllRentals();
+
+    List<Rental> findAllByFromDateBetween(LocalDateTime fromDate, LocalDateTime toDate);
 }

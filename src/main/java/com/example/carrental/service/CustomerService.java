@@ -6,6 +6,7 @@ import com.example.carrental.repository.CustomerRepository;
 import com.example.carrental.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,10 +20,12 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
     private final UserRepository userRepository;
 
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     public List<Customer> getAllCustomers() {
         return customerRepository.findAllCustomers();
     }
 
+    @PreAuthorize("#id == authentication.principal.customer.id || hasRole('EMPLOYEE')")
     public Customer getSingleCustomer(long id) {
         return customerRepository.findById(id).orElseThrow();
     }
@@ -36,6 +39,7 @@ public class CustomerService {
         return customerRepository.save(customer); // user is saved automatically because of Cascade.ALL in relation??? is not
     }
 
+    @PreAuthorize("#id == authentication.principal.customer.id")
     public void deleteCustomer(long id) {
         if(!customerRepository.existsById(id)) {
             throw new IllegalStateException("customer with id " + id + " does not exists!");
@@ -44,6 +48,7 @@ public class CustomerService {
     }
 
     @Transactional
+    @PreAuthorize("#id == authentication.principal.customer.id || hasAuthority('EMPLOYEE')")
     public Customer updateCustomer(long id, Customer newCustomer) {
         Customer currentCustomer = customerRepository.findById(id).orElseThrow(() ->
                     new IllegalStateException("customer with id " + id + " does not exists! Cannot update."));

@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 
 @Entity(name = "Car")
 @Getter
@@ -31,7 +32,7 @@ public class Car {
     @Column(name = "production_year")
     private Integer productionYear;
     @Column(name = "actual_daily_price")
-    private BigDecimal actualDailyPrice; // TODO table priceUpdate for price changes history, if actual price changes save old price as history
+    private BigDecimal actualDailyPrice;
 
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
@@ -40,4 +41,18 @@ public class Car {
     @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<PriceUpdate> priceUpdates;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Car c = (Car)o;
+        return brand.equals(c.getBrand()) && model.equals(c.getModel()) && productionYear.equals(c.getProductionYear())
+                && actualDailyPrice.equals(c.getActualDailyPrice());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(brand, model, productionYear, actualDailyPrice);
+    }
 }
