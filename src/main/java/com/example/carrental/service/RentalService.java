@@ -11,8 +11,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -21,6 +24,7 @@ public class RentalService {
     private RentalRepository rentalRepository;
     private CarRepository carRepository;
     private CustomerRepository customerRepository;
+    private PriceUpdateService priceUpdateService;
 
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'ADMIN')")
     public List<Rental> getAllRentals() {
@@ -34,6 +38,7 @@ public class RentalService {
         });
     }
 
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'ADMIN', 'CUSTOMER')")
     public Rental addRental(RentalDTO rentalDTO) {
         Car c = carRepository.findById(rentalDTO.getCarId()).orElseThrow(() -> {
             throw new IllegalStateException("car with id " + rentalDTO.getCarId() + " does not exists.");
@@ -70,8 +75,21 @@ public class RentalService {
         rentalRepository.deleteById(id);
     }
 
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'ADMIN')")
     public List<Rental> getRentalsBetweenDates(LocalDateTime fromDate, LocalDateTime toDate) {
         return rentalRepository.findAllByFromDateBetween(fromDate, toDate);
+    }
+
+    @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'ADMIN')")
+    public BigDecimal calculateEarning(Rental r) {
+        BigDecimal result;
+        long days = Duration.between(r.getFromDate(), r.getToDate()).toDays();
+        Optional<BigDecimal> priceOnStartingDay = priceUpdateService.findPriceOnDate(r.getCar().getId(), r.getFromDate());
+        BigDecimal price = priceOnStartingDay.orElse(BigDecimal.valueOf(0.0));
+
+        result = BigDecimal.valueOf(days).multiply(price);
+
+        return result;
     }
 
 }

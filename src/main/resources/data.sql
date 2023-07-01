@@ -1,7 +1,7 @@
 INSERT INTO car (brand, model, production_year, actual_daily_price) values ('toyota', 'corolla', 2020, 100);
-INSERT INTO car (brand, model, production_year, actual_daily_price) values ('kia', 'sportage', 2019, 250);
+INSERT INTO car (brand, model, production_year, actual_daily_price) values ('kia', 'sportage', 2019, 220);
 INSERT INTO car (brand, model, production_year, actual_daily_price) values ('volkswagen', 'polo', 2018, 150);
-INSERT INTO car (brand, model, production_year, actual_daily_price) values ('toyota', 'yaris', 2021, 110);
+INSERT INTO car (brand, model, production_year, actual_daily_price) values ('toyota', 'yaris', 2021, 90);
 INSERT INTO car (brand, model, production_year, actual_daily_price) values ('volkswagen', 'golf', 2018, 80);
 
 INSERT INTO price_update (price, update_date, car_id) VALUES (100, '2023-02-23 11:00', 1);
@@ -10,7 +10,7 @@ INSERT INTO price_update (price, update_date, car_id) VALUES (150, '2023-02-23 1
 INSERT INTO price_update (price, update_date, car_id) VALUES (110, '2023-02-23 11:00', 4);
 INSERT INTO price_update (price, update_date, car_id) VALUES (80, '2023-02-23 11:00', 5);
 
--- INSERT INTO _user (first_name, last_name, phone_number, address, email, password, role) values ('Jan', 'Kowalski', '123456789', 'Warszawa, Emilii Plater 24', 'jan.kowalski@gmail.com', crypt('zaq12wsx', gen_salt('bf')), 'CUSTOMER');
+--INSERT INTO _user (first_name, last_name, phone_number, address, email, password, role) values ('Jan', 'Kowalski', '123456789', 'Warszawa, Emilii Plater 24', 'jan.kowalski@gmail.com', crypt('zaq12wsx', gen_salt('bf')), 'CUSTOMER');
 -- INSERT INTO _user (first_name, last_name, phone_number, address, email, password, role) values ('Piotr', 'Nowak', '111222333', 'Warszawa, Niepodległości 44', 'piotr.nowak@gmail.com',  crypt('12345', gen_salt('bf')), 'CUSTOMER');
 --TODO trigger in database for encrypting password after insert/update
 INSERT INTO _user (first_name, last_name, phone_number, address, email, password, role) values ('Jan', 'Kowalski', '123456789', 'Warszawa, Emilii Plater 24', 'jan.kowalski@gmail.com', 'zaq12wsx', 'CUSTOMER');

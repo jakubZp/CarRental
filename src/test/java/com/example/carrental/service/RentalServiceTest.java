@@ -32,6 +32,8 @@ class RentalServiceTest {
     private CarRepository carRepository;
     @Mock
     private CustomerRepository customerRepository;
+    @Mock
+    private PriceUpdateService priceUpdateService;
     private RentalDTOMapper rentalDTOMapper;
     private RentalService underTest;
     private Car car;
@@ -41,7 +43,7 @@ class RentalServiceTest {
 
     @BeforeEach
     void setup() {
-        underTest = new RentalService(rentalRepository, carRepository, customerRepository);
+        underTest = new RentalService(rentalRepository, carRepository, customerRepository, priceUpdateService);
         car = new Car(1L, "toyota", "yaris", 2023, new BigDecimal(100), new ArrayList<>(), null);
         user = new User(1L, null, null, "Tom", "Smith", "123456789", "Warsaw", "tom@gmail.com", "zaq1", Role.CUSTOMER);
         customer = new Customer();
@@ -219,5 +221,27 @@ class RentalServiceTest {
         // then
         String message = "rental with id " + rentalId + " does not exists";
         assertThat(thrown).hasMessage(message);
+    }
+
+    @Test
+    public void should_calculateEarningCorrectly() {
+        // given
+        Car car = new Car();
+        car.setId(1L);
+        car.setActualDailyPrice(new BigDecimal(100));
+        Rental rental = new Rental(1L,
+                LocalDateTime.parse("2023-05-10T10:00"),
+                LocalDateTime.parse("2023-05-20T10:00"),
+                car, new Customer()
+        );
+        Mockito.when(priceUpdateService.findPriceOnDate(rental.getCar().getId(), rental.getFromDate()))
+                .thenReturn(Optional.of(BigDecimal.valueOf(100)));
+
+        // when
+        BigDecimal result = underTest.calculateEarning(rental);
+
+        // then
+        BigDecimal expected = new BigDecimal(1000);
+        assertThat(result).isEqualByComparingTo(expected);
     }
 }

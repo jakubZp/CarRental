@@ -1,12 +1,15 @@
-package com.example.carrental.service;
+package com.example.carrental.service.report;
 
 import com.example.carrental.model.Rental;
+import com.example.carrental.service.PriceUpdateService;
+import com.example.carrental.service.RentalService;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
@@ -19,16 +22,19 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ReportPDFService {
 
+    private final RentalService rentalService;
     private final PriceUpdateService priceUpdateService;
+    private BigDecimal earnedMoney = BigDecimal.ZERO;
 
     public void generateRentalsReport(List<Rental> rentals, HttpServletResponse response) {
 
         response.setContentType("application/pdf");
         String headerkey = "Content-Disposition";
 
+        Collections.sort(rentals);
         LocalDateTime fromDate = rentals.get(0).getFromDate();
         LocalDateTime toDate = rentals.get(rentals.size()-1).getToDate();
 
@@ -48,6 +54,9 @@ public class ReportPDFService {
         title.setAlignment(Paragraph.ALIGN_CENTER);
         document.add(title);
         addRentalsTable(document, rentals);
+        Paragraph footer = new Paragraph("Sum: " + earnedMoney);
+        footer.setAlignment(Paragraph.ALIGN_RIGHT);
+        document.add(footer);
 
         document.close();
 
@@ -71,7 +80,7 @@ public class ReportPDFService {
             table.addCell(cell);
         }
 
-        Collections.sort(rentals);
+        //Collections.sort(rentals);
         for(Rental r: rentals) {
             table.addCell(String.valueOf(r.getId()));
             table.addCell(String.valueOf(r.getFromDate()));
@@ -81,20 +90,24 @@ public class ReportPDFService {
             table.addCell(String.valueOf(Duration.between(r.getFromDate(), r.getToDate()).toDays()));
             BigDecimal dailyPrice = priceUpdateService.findPriceOnDate(r.getCar().getId(), r.getFromDate()).orElse(BigDecimal.valueOf(0.0));
             table.addCell(String.valueOf(dailyPrice));
-            table.addCell(String.valueOf(calculateEarning(r)));
+            BigDecimal currentEarning = rentalService.calculateEarning(r);
+            table.addCell(String.valueOf(currentEarning));
+            earnedMoney = earnedMoney.add(currentEarning);
         }
 
         document.add(table);
     }
 
-    public BigDecimal calculateEarning(Rental r) {
-        BigDecimal result;
-        long days = Duration.between(r.getFromDate(), r.getToDate()).toDays();
-        Optional<BigDecimal> priceOnStartingDay = priceUpdateService.findPriceOnDate(r.getCar().getId(), r.getFromDate());
-        BigDecimal price = priceOnStartingDay.orElse(BigDecimal.valueOf(0.0));
-
-        result = BigDecimal.valueOf(days).multiply(price);
-
-        return result;
-    }
+//    public BigDecimal calculateEarning(Rental r) {
+//        BigDecimal result;
+//        long days = Duration.between(r.getFromDate(), r.getToDate()).toDays();
+//        Optional<BigDecimal> priceOnStartingDay = priceUpdateService.findPriceOnDate(r.getCar().getId(), r.getFromDate());
+//        BigDecimal price = priceOnStartingDay.orElse(BigDecimal.valueOf(0.0));
+//
+//        result = BigDecimal.valueOf(days).multiply(price);
+//
+//        earnedMoney = earnedMoney.add(result);
+//
+//        return result;
+//    }
 }
