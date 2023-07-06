@@ -1,0 +1,10 @@
+.cars-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cars-footer {
+    margin-top: 3%;
+    margin-left: 60%;;
+}

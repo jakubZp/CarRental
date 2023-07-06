@@ -13,6 +13,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -36,10 +37,10 @@ class CarServiceTest {
     @Test
     public void should_getAllCars() {
         // when
-        underTest.getAllCars();
+        underTest.getAllCars(0, 10);
 
         // then
-        Mockito.verify(carRepository).findAllCars();
+        Mockito.verify(carRepository).findAllCars(Mockito.any(PageRequest.class));
     }
 
     @Test

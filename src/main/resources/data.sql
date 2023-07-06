@@ -3,6 +3,12 @@ INSERT INTO car (brand, model, production_year, actual_daily_price) values ('kia
 INSERT INTO car (brand, model, production_year, actual_daily_price) values ('volkswagen', 'polo', 2018, 150);
 INSERT INTO car (brand, model, production_year, actual_daily_price) values ('toyota', 'yaris', 2021, 90);
 INSERT INTO car (brand, model, production_year, actual_daily_price) values ('volkswagen', 'golf', 2018, 80);
+INSERT INTO car (brand, model, production_year, actual_daily_price) values ('ford', 'focus', 2018, 110);
+INSERT INTO car (brand, model, production_year, actual_daily_price) values ('toyota', 'aygo', 2019, 120);
+INSERT INTO car (brand, model, production_year, actual_daily_price) values ('volkswagen', 'passat', 2016, 120);
+INSERT INTO car (brand, model, production_year, actual_daily_price) values ('ford', 'fiesta', 2016, 80);
+INSERT INTO car (brand, model, production_year, actual_daily_price) values ('volkswagen', 'golf', 2017, 80);
+INSERT INTO car (brand, model, production_year, actual_daily_price) values ('toyota', 'yaris', 2020, 90);
 
 INSERT INTO price_update (price, update_date, car_id) VALUES (100, '2023-02-23 11:00', 1);
 INSERT INTO price_update (price, update_date, car_id) VALUES (250, '2023-02-23 11:00', 2);
