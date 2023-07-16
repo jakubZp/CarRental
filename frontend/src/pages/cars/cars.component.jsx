@@ -16,7 +16,6 @@ const Cars = () => {
             setCars(dataJson);
         }
         catch(error) {
-            alert("Cannot fetch data from database.");
             console.log("Error while fetching data from: " + url + "\n error: " + error);
         }
     };
