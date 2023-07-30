@@ -28,9 +28,15 @@
     border: 1px solid #ccc;
     border-radius: 4px;
 }
+
+.form-group .incorrect-password {
+    color: rgb(250, 11, 11);
+    font-weight: bold;
+    text-shadow: 1px 1px #e4e3e3;
+}
   
 .btn {
-    padding: 10px 30px;
+    padding: 18px 40px;
     font-size: 16px;
     text-align: center;
     cursor: pointer;
@@ -49,18 +55,20 @@
 }
 
 .buttons-container {
-    margin-top: 10px;
-    width: 50%;
+    margin-top: 20px;
+    width: 100%;
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+}
+
+.buttons-container .btn {
+    font-size: 14px;
+    transition: background-color 0.3s;
+    padding: 8px 14px;
 }
 
 .btn-sign-up-redirect {
     background-color: #76c1e9;
-    margin-top: 10px;
-    padding: 5px 10px;
-    transition: background-color 0.3s;
-    font-size: 14px;
 }
 
 .btn-sign-up-redirect:hover {
@@ -69,8 +77,6 @@
 
 .btn-forgot-password {
     background-color: #1C7193;
-    font-size: 14px;
-    transition: background-color 0.3s;
 }
 
 .btn-forgot-password:hover {

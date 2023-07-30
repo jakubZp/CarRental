@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -43,5 +44,13 @@ public class CarController {
     public Car updateCar(@PathVariable long id,
                           @RequestBody Car updatedCar) {
         return carService.updateCar(id, updatedCar);
+    }
+
+    @GetMapping("/{from}/{to}")
+    public List<Car> getAvailableCarsBetweenDates(@PathVariable LocalDateTime from,
+                                                  @PathVariable LocalDateTime to,
+                                                  @RequestParam(required = false) Integer page,
+                                                  @RequestParam(required = false) Integer pageSize) {
+        return carService.getAvailableCarsBetweenDates(from, to, page, pageSize);
     }
 }

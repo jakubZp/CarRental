@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -79,5 +80,10 @@ public class CarService {
         }
 
         return c;
+    }
+
+    // TODO
+    public List<Car> getAvailableCarsBetweenDates(LocalDateTime from, LocalDateTime to, Integer page, Integer pageSize) {
+        return carRepository.findAvailableCarsBetweenDates(from, to, PageRequest.of(page, pageSize));
     }
 }

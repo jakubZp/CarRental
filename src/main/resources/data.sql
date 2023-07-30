@@ -18,13 +18,12 @@ INSERT INTO price_update (price, update_date, car_id) VALUES (80, '2023-02-23 11
 
 INSERT INTO _user (first_name, last_name, phone_number, address, email, password, role) values ('Jan', 'Kowalski', '123456789', 'Warszawa, Emilii Plater 24', 'jan.kowalski@gmail.com', crypt('zaq12wsx', gen_salt('bf')), 'CUSTOMER');
 INSERT INTO _user (first_name, last_name, phone_number, address, email, password, role) values ('Piotr', 'Nowak', '111222333', 'Warszawa, Niepodległości 44', 'piotr.nowak@gmail.com',  crypt('12345', gen_salt('bf')), 'CUSTOMER');
---TODO trigger in database for encrypting password after insert/update
 -- INSERT INTO _user (first_name, last_name, phone_number, address, email, password, role) values ('Jan', 'Kowalski', '123456789', 'Warszawa, Emilii Plater 24', 'jan.kowalski@gmail.com', 'zaq12wsx', 'CUSTOMER');
 -- INSERT INTO _user (first_name, last_name, phone_number, address, email, password, role) values ('Piotr', 'Nowak', '111222333', 'Warszawa, Niepodległości 44', 'piotr.nowak@gmail.com',  '12345', 'CUSTOMER');
 
-INSERT INTO _user (first_name, last_name, phone_number, address, email, password) values ('Karolina', 'Wójcik', '987654321', 'Gdańsk, 3 Maja 56', 'karolina.wojcik@o2.pl', 'wsxcde3');
-INSERT INTO _user (first_name, last_name, phone_number, address, email, password) values ('Oskar', 'Stankowski', '666999777', 'Warszawa, Sienkiewicza 25', 'oskar.stan@gmail.com', '12345');
-INSERT INTO _user (first_name, last_name, phone_number, address, email, password) values ('Paulina', 'Nowak', '801802803', 'Pruszków, Batorego 33', 'paula.nowak@protonmail.com', 'AwX0!~lmn ..;');
+INSERT INTO _user (first_name, last_name, phone_number, address, email, password) values ('Karolina', 'Wójcik', '987654321', 'Gdańsk, 3 Maja 56', 'karolina.wojcik@o2.pl', crypt('wsxcde3', gen_salt('bf')));
+INSERT INTO _user (first_name, last_name, phone_number, address, email, password) values ('Oskar', 'Stankowski', '666999777', 'Warszawa, Sienkiewicza 25', 'oskar.stan@gmail.com', crypt('12345', gen_salt('bf')));
+INSERT INTO _user (first_name, last_name, phone_number, address, email, password) values ('Paulina', 'Nowak', '801802803', 'Pruszków, Batorego 33', 'paula.nowak@protonmail.com', crypt('AwX0!~lmn ..;', gen_salt('bf')));
 
 INSERT INTO customer (user_id) VALUES (1);
 INSERT INTO customer (user_id) VALUES (2);

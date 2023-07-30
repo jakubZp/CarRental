@@ -72,7 +72,7 @@ public class ReportExcelService {
         String headerKey = "Content-Disposition";
         LocalDateTime fromDate = rentals.get(0).getFromDate();
         LocalDateTime toDate = rentals.get(rentals.size()-1).getToDate();
-        String headerValue = "attachment; filename=rentals_" + fromDate + "_to_" + toDate + ".xlsx";
+        String headerValue = "attachment; filename=rentals" + ".xlsx";
         response.setHeader(headerKey, headerValue);
 
         // TODO try with resources

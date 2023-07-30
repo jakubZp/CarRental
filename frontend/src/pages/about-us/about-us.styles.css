@@ -1,0 +1,7 @@
+.about-us {
+    width: 60%;
+    height: 100vh;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+}

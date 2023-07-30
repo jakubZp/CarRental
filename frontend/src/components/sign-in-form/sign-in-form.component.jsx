@@ -8,34 +8,42 @@ const SignIn = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const {setUser} = useContext(UserContext);
-
+    const [error, setError] = useState(false);
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
 
     const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-        fetch(`http://localhost:8080/api/v1/auth/login`, {
-            method: "POST",
-            headers: {"content-Type": "application/json"},
-            body: JSON.stringify({
-                email: email,
-                password: password
-            }),
-        })
-        .then((response) => response.json())
-        .then((response) => {
-            console.log(response);
-            const roles = response?.role;
-            const token = response?.token;
-            setUser({roles, token});
-        })
-    } catch (error){
-        if(!error?.response) {
-            console.log("no server response");
-        } else {
-            console.log("login failed");
-        }
+        e.preventDefault();
+        try {
+            const response = await fetch(`http://localhost:8080/api/v1/auth/login`, {
+                method: "POST",
+                headers: {"content-Type": "application/json"},
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                }),
+            })
+
+            if(response.ok) {
+                const data = await response.json();
+                const roles = data?.role;
+                const token = response?.token;
+                setUser({roles, token});
+            }
+            else if(response.status === 403) {
+                setError(true);
+            }
+            else {
+                setError(true);
+                alert("Cannot log in.")
+            }
+            
+        } catch (error){
+            if(!error?.response) {
+                console.log("no server response");
+            } else {
+                console.log("login failed");
+            }
     }
 
     setEmail('');
@@ -67,8 +75,9 @@ const SignIn = () => {
                     className="form-input"
                     required
                 />
+                {error && <span className="incorrect-password">Incorrect password</span>}
             </div>
-        <button type="submit" className="btn btn-login">Log in</button>
+        <button type="submit" className="btn btn-login">Sign in</button>
         </form>
         <div className="buttons-container">
             <button className="btn btn-forgot-password">Forgot password?</button>

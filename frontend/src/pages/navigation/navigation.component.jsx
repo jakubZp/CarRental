@@ -18,9 +18,11 @@ const Navigation = () => {
                     <Link to={'cars'}>
                         <li>Cars</li>
                     </Link>
-                    <li>Reviews</li>
-                    <li>About us</li>
-                    <li>Contact</li>
+                    {/* <li>Reviews</li> */}
+                    <Link to={'about-us'}>
+                        <li>About us</li>
+                    </Link>
+                    {/* <li>Contact</li> */}
 
                     {currentUser && (<li>Profile</li>)}
 
