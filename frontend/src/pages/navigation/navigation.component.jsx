@@ -5,6 +5,8 @@ import { Link, Outlet } from 'react-router-dom'
 import { useContext } from 'react'
 import UserContext from '../../contexts/user.context'
 
+import SignOutButton from '../../components/sign-out-button/sign-out-button.component'
+
 const Navigation = () => {
     const {currentUser} = useContext(UserContext);
 
@@ -12,6 +14,9 @@ const Navigation = () => {
         <Fragment>
             <nav className="navbar">
                 <div className='navbar-up'>
+                    {/* <Link to={'/'} className='logo'>
+                        <li>carrental</li>
+                    </Link> */}
                     <Link to={'/'}>
                         <li>Home</li>
                     </Link>
@@ -26,11 +31,14 @@ const Navigation = () => {
 
                     {currentUser && (<li>Profile</li>)}
 
-                    {currentUser ? (<li>Sign Out</li>) 
-                    : (
-                    <Link to={'/auth'}>
-                        <li>Sign in</li>
-                    </Link>
+                    {currentUser ? (
+                        <Link>
+                            <SignOutButton/>
+                        </Link>) 
+                        : (
+                        <Link to={'/auth'}>
+                            <li>Sign in</li>
+                        </Link>
                     )}
                     
                 </div>

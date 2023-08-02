@@ -40,7 +40,8 @@ class CarRepositoryTest {
     @BeforeEach
     void setup() {
         car = new Car(1L, "toyota", "yaris", 2023, new BigDecimal(100), null, null);
-        user = new User(1L, null, null, "Tom", "Smith", "123456789", "Warsaw", "tom@gmail.com", "zaq1", Role.CUSTOMER);
+        //TODO add builder not constructor ?
+        user = new User(1L, null, null, "Tom", "Smith", "123456789", "Warsaw", "tom@gmail.com", "zaq1", Role.CUSTOMER, null);
         customer = new Customer();
         customer.setUser(user);
         customerRepository.save(customer);

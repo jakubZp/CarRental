@@ -47,7 +47,7 @@ class RentalServiceTest {
     void setup() {
         underTest = new RentalService(rentalRepository, carRepository, customerRepository, priceUpdateService);
         car = new Car(1L, "toyota", "yaris", 2023, new BigDecimal(100), new ArrayList<>(), null);
-        user = new User(1L, null, null, "Tom", "Smith", "123456789", "Warsaw", "tom@gmail.com", "zaq1", Role.CUSTOMER);
+        user = new User(1L, null, null, "Tom", "Smith", "123456789", "Warsaw", "tom@gmail.com", "zaq1", Role.CUSTOMER, null);
         customer = new Customer();
         customer.setUser(user);
         customer.setCustomerRents(new ArrayList<>());

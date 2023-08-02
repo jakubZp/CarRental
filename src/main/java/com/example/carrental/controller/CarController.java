@@ -12,7 +12,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/cars")
-@CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 public class CarController {
     private final CarService carService;

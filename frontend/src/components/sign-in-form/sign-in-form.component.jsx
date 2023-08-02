@@ -17,7 +17,7 @@ const SignIn = () => {
         try {
             const response = await fetch(`http://localhost:8080/api/v1/auth/login`, {
                 method: "POST",
-                headers: {"content-Type": "application/json"},
+                headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({
                     email: email,
                     password: password
@@ -27,7 +27,7 @@ const SignIn = () => {
             if(response.ok) {
                 const data = await response.json();
                 const roles = data?.role;
-                const token = response?.token;
+                const token = data?.token;
                 setUser({roles, token});
             }
             else if(response.status === 403) {
