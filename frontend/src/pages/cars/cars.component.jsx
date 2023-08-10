@@ -12,7 +12,6 @@ const Cars = () => {
             const url = `http://localhost:8080/api/v1/cars?page=${page}&pageSize=${pageSize}`;
             const response = await fetch(url);
             const dataJson = await response.json();
-            console.log(dataJson);
             setCars(dataJson);
         }
         catch(error) {
@@ -22,13 +21,12 @@ const Cars = () => {
 
     useEffect(() => {
         fetchCars(0, 10);
-
     }, []);
 
     return(
         <div>
             <div className="cars-list">
-                <h2>Choose perfect car for rent</h2>
+                <h2 className="header">Choose perfect car for rent</h2>
                 {cars.map(car => (
                     <CarItem car={car} key={car.id}/>
                 ))}

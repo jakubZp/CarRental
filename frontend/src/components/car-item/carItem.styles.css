@@ -1,5 +1,14 @@
-.item-container {
+.car-item {
     width: 30%;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
+    border: 1px solid;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.car-item .price {
+    margin-right: 15px;
+    font-weight: bold;
 }

@@ -1,8 +1,12 @@
 import { useContext } from "react"
+import { useNavigate, useLocation } from "react-router-dom";
+
 import UserContext from "../../contexts/user.context"
 
 const SignOutButton = () => {
     const {currentUser, setUser} = useContext(UserContext);
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const handleSignOut = async () => {
         try {
@@ -14,6 +18,7 @@ const SignOutButton = () => {
                     }
                 });
             setUser(null);
+            navigate("/auth", {state: {from: location}, replace: true});
             } catch(error) {
                 console.log(error);
             }

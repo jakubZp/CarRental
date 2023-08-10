@@ -6,6 +6,7 @@ import AboutUs from './pages/about-us/about-us.component'
 import Authentication from './pages/authentication/authentication.component'
 import Unauthorized from './pages/unauthorized/unauthorized.component'
 import Rentals from './pages/rentals/rentals.component'
+import Order from './pages/order/order.component'
 
 import AuthHandler from './components/auth-handler/auth-handler.component'
 
@@ -20,6 +21,9 @@ function App() {
             <Route path='auth' element={<Authentication/>}/>
             <Route element={<AuthHandler allowedRoles={['EMPLOYEE', 'ADMIN']}/>}>
                 <Route path='rentals' element={<Rentals/>}/>
+            </Route>
+            <Route element={<AuthHandler allowedRoles={['CUSTOMER', 'EMPLOYEE', 'ADMIN']}/>}>
+                <Route path='order' element={<Order/>}/>
             </Route>
             <Route path='unauthorized' element={<Unauthorized/>}/>
         </Route>

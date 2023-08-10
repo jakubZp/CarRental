@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import UserContext from "../../contexts/user.context";
 
 import "./sign-in-form.styles.css";
@@ -11,6 +11,16 @@ const SignIn = () => {
     const [error, setError] = useState(false);
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
+
+    // useEffect(() => {
+    //     const storedUser = sessionStorage.getItem("user");
+    //     console.log(storedUser);
+    //     if(storedUser) {
+    //         const user = JSON.parse(storedUser);
+    //         console.log(user);
+    //         setUser(user);
+    //     }
+    // }, [])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -28,6 +38,10 @@ const SignIn = () => {
                 const data = await response.json();
                 const roles = data?.role;
                 const token = data?.token;
+                // sessionStorage.setItem(
+                //     "user",
+                //     JSON.stringify({ roles, token })
+                // );
                 setUser({roles, token});
             }
             else if(response.status === 403) {

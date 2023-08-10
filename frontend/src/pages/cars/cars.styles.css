@@ -4,6 +4,10 @@
     align-items: center;
 }
 
+.cars-list .header {
+    margin: 10px 0px;
+}
+
 .cars-footer {
     margin-top: 3%;
     margin-left: 60%;;
