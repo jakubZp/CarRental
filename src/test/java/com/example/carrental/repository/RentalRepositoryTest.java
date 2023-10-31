@@ -2,11 +2,13 @@ package com.example.carrental.repository;
 
 import com.example.carrental.model.*;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -17,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest(properties = "application-test.properties")
+@ActiveProfiles("test")
 class RentalRepositoryTest {
 
     @Autowired
@@ -31,7 +34,7 @@ class RentalRepositoryTest {
     @BeforeEach
     void setup() {
         car = new Car(1L, "toyota", "yaris", 2023, new BigDecimal(100), null, null);
-        user = new User(1L, null, null, "Tom", "Smith", "123456789", "Warsaw", "tom@gmail.com", "zaq1", Role.CUSTOMER);
+        user = new User(1L, null, null, "Tom", "Smith", "123456789", "Warsaw", "tom@gmail.com", "zaq1", Role.CUSTOMER, null);
         customer = new Customer();
         customer.setUser(user);
         customerRepository.save(customer);

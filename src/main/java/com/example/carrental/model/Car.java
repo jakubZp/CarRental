@@ -34,11 +34,11 @@ public class Car {
     @Column(name = "actual_daily_price")
     private BigDecimal actualDailyPrice;
 
-    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "car")
     @JsonIgnore
     private List<Rental> carRents;
 
-    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "car")
     @JsonIgnore
     private List<PriceUpdate> priceUpdates;
 
@@ -54,5 +54,18 @@ public class Car {
     @Override
     public int hashCode() {
         return Objects.hash(brand, model, productionYear, actualDailyPrice);
+    }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "id=" + id +
+                ", brand='" + brand + '\'' +
+                ", model='" + model + '\'' +
+                ", productionYear=" + productionYear +
+                ", actualDailyPrice=" + actualDailyPrice +
+                ", carRents=" + carRents +
+                ", priceUpdates=" + priceUpdates +
+                '}';
     }
 }

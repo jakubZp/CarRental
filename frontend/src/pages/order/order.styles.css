@@ -1,0 +1,22 @@
+.order {
+    width: 40%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    border: 1px solid;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -20%);
+}
+
+.overview {
+    margin: 10px 0;
+}
+
+.attribute {
+    font-weight: bold;
+}

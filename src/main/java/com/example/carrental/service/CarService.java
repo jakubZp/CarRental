@@ -6,11 +6,14 @@ import com.example.carrental.repository.CarRepository;
 import com.example.carrental.repository.PriceUpdateRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,8 +24,8 @@ public class CarService {
     private final CarRepository carRepository;
     private final PriceUpdateRepository priceUpdateRepository;
 
-    public List<Car> getAllCars() {
-        return carRepository.findAllCars();
+    public List<Car> getAllCars(int pageNumber, int size) {
+        return carRepository.findAllCars(PageRequest.of(pageNumber, size));
     }
 
     public Car getSingleCar(long id) {
@@ -77,5 +80,10 @@ public class CarService {
         }
 
         return c;
+    }
+
+    // TODO
+    public List<Car> getAvailableCarsBetweenDates(LocalDateTime from, LocalDateTime to, Integer page, Integer pageSize) {
+        return carRepository.findAvailableCarsBetweenDates(from, to, PageRequest.of(page, pageSize));
     }
 }

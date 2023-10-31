@@ -1,12 +1,10 @@
 package com.example.carrental.auth;
 
 import com.example.carrental.config.JwtService;
-import com.example.carrental.model.Customer;
-import com.example.carrental.model.Employee;
-import com.example.carrental.model.Role;
-import com.example.carrental.model.User;
+import com.example.carrental.model.*;
 import com.example.carrental.repository.CustomerRepository;
 import com.example.carrental.repository.EmployeeRepository;
+import com.example.carrental.repository.TokenRepository;
 import com.example.carrental.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class AuthenticationService {
 
     private final UserRepository userRepository;
+    private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
@@ -39,7 +38,8 @@ public class AuthenticationService {
                 .role(request.getRole())
                 .build();
 
-        userRepository.save(user);
+        var savedUser = userRepository.save(user);
+
         if(request.getRole() == Role.CUSTOMER) {
             Customer c = new Customer();
             c.setUser(user);
@@ -53,10 +53,32 @@ public class AuthenticationService {
         }
 
         var jwtToken = jwtService.generateToken(user);
+        saveUserToken(savedUser, jwtToken);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
+    }
 
+    private void revokeAllUserTokens(User user) {
+        var validUserTokens = tokenRepository.findAllValidTokensByUser(user.getId());
+        if (validUserTokens.isEmpty())
+            return;
+        validUserTokens.forEach(t -> {
+            t.setExpired(true);
+            t.setRevoked(true);
+        });
+        tokenRepository.saveAll(validUserTokens);
+    }
+
+    private void saveUserToken(User user, String jwtToken) {
+        var token = Token.builder()
+                .user(user)
+                .token(jwtToken)
+                .tokenType(TokenType.BEARER)
+                .revoked(false)
+                .expired(false)
+                .build();
+        tokenRepository.save(token);
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -70,8 +92,11 @@ public class AuthenticationService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         var jwtToken = jwtService.generateToken(user);
+        revokeAllUserTokens(user);
+        saveUserToken(user, jwtToken);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .role(user.getRole())
                 .build();
     }
 }
