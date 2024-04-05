@@ -22,6 +22,10 @@ public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
     private final LogoutHandler logoutHandler;
+    public static final String[] PUBLIC_PATHS = {"/api/v1/auth/**",
+            "/api/v1/cars/**",
+            "/swagger-ui/**",
+            "v3/api-docs/**"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -31,12 +35,12 @@ public class SecurityConfiguration {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/v1/auth/**", "/api/v1/cars/**", "/swagger-ui/**")
-                .permitAll()
-                .requestMatchers("api/v1/priceupdates")
-                .hasAnyAuthority("EMPLOYEE", "ADMIN")
-                .anyRequest()
-                .authenticated()
+                    .requestMatchers(PUBLIC_PATHS)
+                    .permitAll()
+                    .requestMatchers("api/v1/priceupdates")
+                    .hasAnyAuthority("EMPLOYEE", "ADMIN")
+                    .anyRequest()
+                    .authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

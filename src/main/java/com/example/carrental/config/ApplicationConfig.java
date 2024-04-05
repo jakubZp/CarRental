@@ -1,6 +1,6 @@
 package com.example.carrental.config;
 
-import com.example.carrental.repository.UserRepository;
+import com.example.carrental.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -62,4 +62,5 @@ public class ApplicationConfig {
             }
         };
     }
+
 }

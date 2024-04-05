@@ -1,7 +1,8 @@
 package com.example.carrental.repository;
 
-import com.example.carrental.model.Car;
-import com.example.carrental.model.PriceUpdate;
+import com.example.carrental.car.Car;
+import com.example.carrental.priceUpdate.PriceUpdate;
+import com.example.carrental.priceUpdate.PriceUpdateRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;

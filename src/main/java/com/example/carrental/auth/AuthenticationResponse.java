@@ -1,6 +1,6 @@
 package com.example.carrental.auth;
 
-import com.example.carrental.model.Role;
+import com.example.carrental.user.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

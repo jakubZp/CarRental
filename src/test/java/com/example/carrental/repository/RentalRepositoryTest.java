@@ -1,13 +1,17 @@
 package com.example.carrental.repository;
 
-import com.example.carrental.model.*;
+import com.example.carrental.car.Car;
+import com.example.carrental.customer.Customer;
+import com.example.carrental.customer.CustomerRepository;
+import com.example.carrental.rental.Rental;
+import com.example.carrental.rental.RentalRepository;
+import com.example.carrental.user.Role;
+import com.example.carrental.user.User;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;

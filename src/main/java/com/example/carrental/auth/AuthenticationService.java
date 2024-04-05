@@ -1,11 +1,12 @@
 package com.example.carrental.auth;
 
 import com.example.carrental.config.JwtService;
-import com.example.carrental.model.*;
-import com.example.carrental.repository.CustomerRepository;
-import com.example.carrental.repository.EmployeeRepository;
-import com.example.carrental.repository.TokenRepository;
-import com.example.carrental.repository.UserRepository;
+import com.example.carrental.customer.Customer;
+import com.example.carrental.employee.Employee;
+import com.example.carrental.customer.CustomerRepository;
+import com.example.carrental.employee.EmployeeRepository;
+import com.example.carrental.user.TokenRepository;
+import com.example.carrental.user.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,7 +35,7 @@ public class AuthenticationService {
                 .address(request.getAddress())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                //.role(Role.CUSTOMER) // TODO should RegisterRequest contains Role ??
+//                .role(Role.CUSTOMER) // TODO should RegisterRequest contains Role ??
                 .role(request.getRole())
                 .build();
 

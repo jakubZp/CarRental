@@ -1,11 +1,17 @@
 package com.example.carrental.service;
 
-import com.example.carrental.controller.dto.RentalDTO;
-import com.example.carrental.controller.mapper.RentalDTOMapper;
-import com.example.carrental.model.*;
-import com.example.carrental.repository.CarRepository;
-import com.example.carrental.repository.CustomerRepository;
-import com.example.carrental.repository.RentalRepository;
+import com.example.carrental.car.Car;
+import com.example.carrental.customer.Customer;
+import com.example.carrental.priceUpdate.PriceUpdateService;
+import com.example.carrental.rental.RentalDTO;
+import com.example.carrental.rental.RentalDTOMapper;
+import com.example.carrental.rental.Rental;
+import com.example.carrental.rental.RentalService;
+import com.example.carrental.car.CarRepository;
+import com.example.carrental.customer.CustomerRepository;
+import com.example.carrental.rental.RentalRepository;
+import com.example.carrental.user.Role;
+import com.example.carrental.user.User;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
