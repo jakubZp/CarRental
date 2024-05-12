@@ -41,7 +41,7 @@ public class Car {
     private List<Rental> carRents;
 
     @OneToMany(mappedBy = "car")
-    @JsonIgnore//TODO
+    @JsonIgnore//TODO make DTO
     private List<PriceUpdate> priceUpdates;
 
     @Override

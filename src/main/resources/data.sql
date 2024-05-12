@@ -43,3 +43,7 @@ INSERT INTO rental (from_date, to_date, car_id, customer_id) values ('2023-03-04
 INSERT INTO rental (from_date, to_date, car_id, customer_id) values ('2023-05-05 14:00', '2023-05-15 14:00', 3, 3);
 INSERT INTO rental (from_date, to_date, car_id, customer_id) values ('2023-08-05 10:00', '2023-08-15 10:00', 5, 3);
 INSERT INTO rental (from_date, to_date, car_id, customer_id) values ('2023-08-20 10:00', '2023-08-30 10:00', 8, 4);
+
+INSERT INTO rental (from_date, to_date, car_id, customer_id) values ('2024-04-20 10:00', '2024-05-10 10:00', 2, 2);
+INSERT INTO rental (from_date, to_date, car_id, customer_id) values ('2024-04-20 10:00', '2024-04-30 10:00', 3, 4);
+INSERT INTO rental (from_date, to_date, car_id, customer_id) values ('2024-05-20 10:00', '2024-08-30 10:00', 8, 5);

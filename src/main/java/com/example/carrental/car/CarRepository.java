@@ -25,18 +25,4 @@ public interface CarRepository extends JpaRepository<Car, Long> {
             "            OR r.toDate BETWEEN ?1 AND ?2)" +
             "    )")
     List<Car> findAvailableCarsBetweenDates(LocalDateTime fromDate, LocalDateTime toDate, Pageable page);
-
-    // in SQL
-    //-- available between 15.03.2023 and 29.03.2023
-    //
-    //SELECT *
-    //FROM car c
-    //WHERE NOT EXISTS(
-    //        SELECT *
-    //        FROM rental r
-    //        WHERE r.car_id = c.id
-    //            AND (r.from_date BETWEEN '2023-03-15T10:00:00' AND '2023-03-29T10:00:00'
-    //                OR r.to_date BETWEEN '2023-03-15T10:00:00' AND '2023-03-29T10:00:00'
-    //                  )
-    //    );
 }

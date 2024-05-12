@@ -1,5 +1,6 @@
 package com.example.carrental.car;
 
+import com.example.carrental.exceptions.DateNotValidException;
 import com.example.carrental.priceUpdate.PriceUpdate;
 import com.example.carrental.priceUpdate.PriceUpdateRepository;
 import jakarta.transaction.Transactional;
@@ -80,8 +81,9 @@ public class CarService {
         return c;
     }
 
-    // TODO
     public List<Car> getAvailableCarsBetweenDates(LocalDateTime from, LocalDateTime to, Integer page, Integer pageSize) {
+        if(from.isAfter(to))
+            throw new DateNotValidException("start date should be after end date");
         return carRepository.findAvailableCarsBetweenDates(from, to, PageRequest.of(page, pageSize));
     }
 }

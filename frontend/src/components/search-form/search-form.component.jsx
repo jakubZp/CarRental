@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 import { OrderContext } from "../../contexts/order.context";
 
@@ -11,11 +11,19 @@ const SearchForm = ({setAvailableCars}) => {
 
     const fetchAvailableCars = async (from, to, page, pageSize) => {
         try {
-            const url = `http://localhost:8080/api/v1/cars/${from}/${to}?page=${page}&pageSize=${pageSize}`;
-            const response = await fetch(url);
-            const dataJson = await response.json();
-            setAvailableCars(dataJson);
-            // console.log('from: %s\n to: %s\n location: %s\n', fromDate, toDate, location);
+            if(from < to) {
+                const url = `http://localhost:8080/api/v1/cars/${from}/${to}?page=${page}&pageSize=${pageSize}`;
+                const response = await fetch(url);
+                if(response.ok) {
+                    const dataJson = await response.json();
+                    setAvailableCars(dataJson);
+                }
+                else {
+                    console.log("fetch exception, start date greater than to date");
+                    setAvailableCars(null);
+                }
+                // console.log('from: %s\n to: %s\n location: %s\n', fromDate, toDate, location);
+            }
         }
         catch(error) {
             console.log("Error while fetching data from: " + url + "\n error: " + error);
@@ -44,26 +52,26 @@ const SearchForm = ({setAvailableCars}) => {
                 <div className="group">
                     <label htmlFor="from-date">From date</label>
                     <input
-                        className="date-input" 
+                        className='date-input'
                         type="datetime-local" 
                         min={"2020-01-01"}
-                        max={"2030-12-30"}
+                        max={toDate}
                         // step={1800}
                         value={fromDate}
-                        onChange={(e) => setFromDate(e.target.value)}
+                        onChange={(e) => {setFromDate(e.target.value)}}
                         required />
                 </div>
 
-                <div className="group">
+                <div className='group'>
                     <label htmlFor="to-date">To date</label>
                     <input
-                        className="date-input"
+                        className='date-input'
                         type="datetime-local" 
-                        min={"2020-01-01"}
+                        min={fromDate}
                         max={"2030-12-30"}
                         // step={1800}
                         value={toDate}
-                        onChange={(e) => setToDate(e.target.value)}
+                        onChange={(e) => {setToDate(e.target.value)}}
                         required />
                 </div>
 
