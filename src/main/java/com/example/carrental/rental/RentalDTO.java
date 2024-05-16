@@ -5,13 +5,10 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-// TODO change on record ?
-@Getter
-@AllArgsConstructor
-public class RentalDTO {
-    private Long rentalId;
-    private LocalDateTime fromDate;
-    private LocalDateTime toDate;
-    private Long carId;
-    private Long customerId;
+
+record RentalDTO(Long rentalId,
+                 LocalDateTime fromDate,
+                 LocalDateTime toDate,
+                 Long carId,
+                 Long customerId){
 }

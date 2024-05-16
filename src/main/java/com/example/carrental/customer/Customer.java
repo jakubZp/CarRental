@@ -26,6 +26,5 @@ public class Customer {
     private User user;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    @JsonIgnore //TODO make DTO for resolve this problem
     public List<Rental> customerRents;
 }

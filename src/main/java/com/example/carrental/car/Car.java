@@ -37,11 +37,9 @@ public class Car {
     private BigDecimal actualDailyPrice;
 
     @OneToMany(mappedBy = "car")
-    @JsonIgnore
     private List<Rental> carRents;
 
     @OneToMany(mappedBy = "car")
-    @JsonIgnore//TODO make DTO
     private List<PriceUpdate> priceUpdates;
 
     @Override

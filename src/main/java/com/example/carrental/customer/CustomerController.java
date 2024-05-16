@@ -6,26 +6,31 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/customers")
 @AllArgsConstructor
 public class CustomerController {
     private final CustomerService customerService;
+    private final CustomerDTOMapper customerDTOMapper;
 
     @GetMapping
-    public List<Customer> getAllCustomers() {
-        return customerService.getAllCustomers();
+    public List<CustomerDTO> getAllCustomers() {
+        return customerService.getAllCustomers()
+                .stream()
+                .map(customerDTOMapper)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("{id}")
-    public Customer getSingleCustomer(@PathVariable long id) {
-        return customerService.getSingleCustomer(id);
+    public CustomerDTO getSingleCustomer(@PathVariable long id) {
+        return customerDTOMapper.apply(customerService.getSingleCustomer(id));
     }
 
     @PostMapping
-    public Customer addCustomer(@RequestBody Customer customer) {
-        return customerService.addCustomer(customer);
+    public CustomerDTO addCustomer(@RequestBody Customer customer) {
+        return customerDTOMapper.apply(customerService.addCustomer(customer));
     }
 
     @DeleteMapping("{id}")
@@ -34,8 +39,8 @@ public class CustomerController {
     }
 
     @PutMapping("{id}")
-    public Customer updateCustomer(@PathVariable long id,
+    public CustomerDTO updateCustomer(@PathVariable long id,
                                  @RequestBody Customer updatedCustomer) {
-        return customerService.updateCustomer(id, updatedCustomer);
+        return customerDTOMapper.apply(customerService.updateCustomer(id, updatedCustomer));
     }
 }

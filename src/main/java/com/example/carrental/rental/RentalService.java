@@ -38,16 +38,16 @@ public class RentalService {
 
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'ADMIN', 'CUSTOMER')")
     public Rental addRental(RentalDTO rentalDTO) {
-        Car c = carRepository.findById(rentalDTO.getCarId()).orElseThrow(() -> {
-            throw new IllegalStateException("car with id " + rentalDTO.getCarId() + " does not exists.");
+        Car c = carRepository.findById(rentalDTO.carId()).orElseThrow(() -> {
+            throw new IllegalStateException("car with id " + rentalDTO.carId() + " does not exists.");
         });
 
-        Customer p = customerRepository.findById(rentalDTO.getCustomerId()).orElseThrow(() -> {
-            throw new IllegalStateException("customer with id " + rentalDTO.getCustomerId() + " does not exists.");
+        Customer p = customerRepository.findById(rentalDTO.customerId()).orElseThrow(() -> {
+            throw new IllegalStateException("customer with id " + rentalDTO.customerId() + " does not exists.");
         });
 
-        LocalDateTime fromDate = rentalDTO.getFromDate();
-        LocalDateTime toDate = rentalDTO.getToDate();
+        LocalDateTime fromDate = rentalDTO.fromDate();
+        LocalDateTime toDate = rentalDTO.toDate();
         List<Rental> overlappingRentals = rentalRepository.findByCarAndDatesOverlap(c, fromDate, toDate);
         if(!overlappingRentals.isEmpty()) {
             throw new IllegalStateException("The car is already booked for the selected dates.");

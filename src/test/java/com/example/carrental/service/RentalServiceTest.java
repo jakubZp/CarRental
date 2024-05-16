@@ -3,7 +3,6 @@ package com.example.carrental.service;
 import com.example.carrental.car.Car;
 import com.example.carrental.customer.Customer;
 import com.example.carrental.priceUpdate.PriceUpdateService;
-import com.example.carrental.rental.RentalDTO;
 import com.example.carrental.rental.RentalDTOMapper;
 import com.example.carrental.rental.Rental;
 import com.example.carrental.rental.RentalService;
@@ -108,8 +107,7 @@ class RentalServiceTest {
         Mockito.when(rentalRepository.findByCarAndDatesOverlap(car, rental.getFromDate(), rental.getToDate())).thenReturn(List.of());
 
         // when
-        RentalDTO rentalDTO = rentalDTOMapper.apply(rental);
-        underTest.addRental(rentalDTO);
+        underTest.addRental(rentalDTOMapper.apply(rental));
 
         // then
         ArgumentCaptor<Rental> rentalArgumentCaptor =
@@ -124,9 +122,8 @@ class RentalServiceTest {
     @Test
     public void should_throwException_whenAddRentalAndCarIdNotExists() {
         // when
-        RentalDTO rentalDTO = rentalDTOMapper.apply(rental);
         Throwable thrown = Assertions.catchThrowable(() -> {
-           underTest.addRental(rentalDTO);
+           underTest.addRental(rentalDTOMapper.apply(rental));
         });
 
         // then
@@ -140,9 +137,8 @@ class RentalServiceTest {
         Mockito.when(carRepository.findById(car.getId())).thenReturn(Optional.of(car));
 
         // when
-        RentalDTO rentalDTO = rentalDTOMapper.apply(rental);
         Throwable thrown = Assertions.catchThrowable(() -> {
-            underTest.addRental(rentalDTO);
+            underTest.addRental(rentalDTOMapper.apply(rental));
         });
 
         // then
@@ -159,9 +155,8 @@ class RentalServiceTest {
                 .thenReturn(List.of(new Rental(), new Rental()));
 
         // when
-        RentalDTO rentalDTO = rentalDTOMapper.apply(rental);
         Throwable thrown = Assertions.catchThrowable(() -> {
-            underTest.addRental(rentalDTO);
+            underTest.addRental(rentalDTOMapper.apply(rental));
         });
 
         // then
@@ -181,9 +176,8 @@ class RentalServiceTest {
                 .thenReturn(List.of());
 
         // when
-        RentalDTO rentalDTO = rentalDTOMapper.apply(rental);
         Throwable thrown = Assertions.catchThrowable(() -> {
-            underTest.addRental(rentalDTO);
+            underTest.addRental(rentalDTOMapper.apply(rental));
         });
 
         // then
@@ -194,7 +188,6 @@ class RentalServiceTest {
     @Test
     public void should_deleteRental_whenRentalIdExists() {
         // given
-        RentalDTO rentalDTO = rentalDTOMapper.apply(rental);
         long rentalId = rental.getId();
         Mockito.when(rentalRepository.existsById(rentalId)).thenReturn(true);
 
@@ -203,7 +196,7 @@ class RentalServiceTest {
         Mockito.when(rentalRepository.findByCarAndDatesOverlap(car, rental.getFromDate(), rental.getToDate())).thenReturn(List.of());
 
         // when
-        underTest.addRental(rentalDTO);
+        underTest.addRental(rentalDTOMapper.apply(rental));
         underTest.deleteRental(rentalId);
 
         // then
@@ -213,7 +206,6 @@ class RentalServiceTest {
     @Test
     public void should_throwException_whenDeleteRentalIdNotExists() {
         // given
-        RentalDTO rentalDTO = rentalDTOMapper.apply(rental);
         long rentalId = rental.getId();
 
         Mockito.when(carRepository.findById(car.getId())).thenReturn(Optional.of(car));
@@ -221,7 +213,7 @@ class RentalServiceTest {
         Mockito.when(rentalRepository.findByCarAndDatesOverlap(car, rental.getFromDate(), rental.getToDate())).thenReturn(List.of());
 
         // when
-        underTest.addRental(rentalDTO);
+        underTest.addRental(rentalDTOMapper.apply(rental));
         Throwable thrown = Assertions.catchThrowable(() -> {
             underTest.deleteRental(rentalId);
         });

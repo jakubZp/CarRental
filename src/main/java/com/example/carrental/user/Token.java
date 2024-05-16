@@ -23,6 +23,6 @@ public class Token {
     private boolean revoked;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+//    @JoinColumn(name = "user_id")//TODO? needed?
     private User user;
 }

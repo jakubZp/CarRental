@@ -23,7 +23,7 @@ public class PriceUpdateController {
                 .collect(Collectors.toList());
     }
 
-    @PreAuthorize("hasRole('EMPLOYEE')")
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
     @PostMapping
     public PriceUpdate addPriceUpdate(@RequestBody PriceUpdateDTO priceUpdate) {
         return priceUpdateService.addPriceUpdate(priceUpdate);

@@ -33,8 +33,8 @@ public class CustomerService {
         if(existingUser.isPresent()) {
             throw new IllegalStateException("email is already taken");
         }
-        userRepository.save(customer.getUser()); // TODO do not sure if it should be here - single responsibility
-        return customerRepository.save(customer); // user is saved automatically because of Cascade.ALL in relation??? is not
+        userRepository.save(customer.getUser());
+        return customerRepository.save(customer);
     }
 
     @PreAuthorize("#id == authentication.principal.customer.id")
