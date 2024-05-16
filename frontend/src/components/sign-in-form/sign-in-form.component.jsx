@@ -2,9 +2,9 @@ import { useContext, useState, useEffect } from "react";
 import UserContext from "../../contexts/user.context";
 
 import "./sign-in-form.styles.css";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
-const SignIn = () => {
+const SignInForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const {setUser} = useContext(UserContext);
@@ -95,10 +95,12 @@ const SignIn = () => {
         </form>
         <div className="buttons-container">
             <button className="btn btn-forgot-password">Forgot password?</button>
-            <button className="btn btn-sign-up-redirect">Don't have account? Sign up</button>
+            <Link to={'/register'}>
+                <button className="btn btn-sign-up-redirect">Don't have account? Sign up</button>
+            </Link>
         </div>
     </div>
     );
 };
 
-export default SignIn;
+export default SignInForm;

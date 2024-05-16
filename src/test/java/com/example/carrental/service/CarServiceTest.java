@@ -1,10 +1,10 @@
 package com.example.carrental.service;
 
 
-import com.example.carrental.model.Car;
-import com.example.carrental.repository.CarRepository;
-import com.example.carrental.repository.PriceUpdateRepository;
-import net.bytebuddy.implementation.bytecode.Throw;
+import com.example.carrental.car.Car;
+import com.example.carrental.car.CarRepository;
+import com.example.carrental.car.CarService;
+import com.example.carrental.priceUpdate.PriceUpdateRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 

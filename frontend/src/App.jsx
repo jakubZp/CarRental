@@ -9,6 +9,7 @@ import Rentals from './pages/rentals/rentals.component'
 import Order from './pages/order/order.component'
 
 import AuthHandler from './components/auth-handler/auth-handler.component'
+import Register from './pages/register/register.component'
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
             <Route path='cars' element={<Cars/>}/>
             <Route path='about-us' element={<AboutUs/>}/>
             <Route path='auth' element={<Authentication/>}/>
+            <Route path='register' element={<Register/>}/>
             <Route element={<AuthHandler allowedRoles={['EMPLOYEE', 'ADMIN']}/>}>
                 <Route path='rentals' element={<Rentals/>}/>
             </Route>
