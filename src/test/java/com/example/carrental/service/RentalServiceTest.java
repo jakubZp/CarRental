@@ -16,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -28,21 +29,18 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 class RentalServiceTest {
 
-    @Mock
-    private RentalRepository rentalRepository;
-    @Mock
-    private CarRepository carRepository;
-    @Mock
-    private CustomerRepository customerRepository;
-    @Mock
-    private PriceUpdateService priceUpdateService;
-    private RentalDTOMapper rentalDTOMapper;
-    private RentalService underTest;
+    @Mock private RentalRepository rentalRepository;
+    @Mock private CarRepository carRepository;
+    @Mock private CustomerRepository customerRepository;
+    @Mock private PriceUpdateService priceUpdateService;
+    private final RentalDTOMapper rentalDTOMapper = new RentalDTOMapper();
+    @InjectMocks private RentalService underTest;
     private Car car;
     private User user;
     private Customer customer;
@@ -50,13 +48,12 @@ class RentalServiceTest {
 
     @BeforeEach
     void setup() {
-        underTest = new RentalService(rentalRepository, carRepository, customerRepository, priceUpdateService);
         car = new Car(1L, "toyota", "yaris", 2023, new BigDecimal(100), new ArrayList<>(), null);
         user = new User(1L, null, null, "Tom", "Smith", "123456789", "Warsaw", "tom@gmail.com", "zaq1", Role.CUSTOMER, null);
-        customer = new Customer();
-        customer.setUser(user);
-        customer.setCustomerRents(new ArrayList<>());
-        rentalDTOMapper = new RentalDTOMapper();
+        customer = Customer.builder()
+                        .user(user)
+                        .customerRents(new ArrayList<>())
+                        .build();
 
         rental = new Rental(1L,
                 LocalDateTime.parse("2023-05-10T10:00"),
@@ -67,10 +64,11 @@ class RentalServiceTest {
 
     @Test
     public void should_getAllRentals() {
+
         // when
         underTest.getAllRentals();
         // then
-        Mockito.verify(rentalRepository).findAllRentals();
+        verify(rentalRepository).findAllRentals();
     }
 
     @Test
@@ -113,7 +111,7 @@ class RentalServiceTest {
         ArgumentCaptor<Rental> rentalArgumentCaptor =
                 ArgumentCaptor.forClass(Rental.class);
 
-        Mockito.verify(rentalRepository).save(rentalArgumentCaptor.capture());
+        verify(rentalRepository).save(rentalArgumentCaptor.capture());
 
         Rental capturedRental = rentalArgumentCaptor.getValue();
         assertThat(capturedRental).isEqualTo(rental);
@@ -200,7 +198,7 @@ class RentalServiceTest {
         underTest.deleteRental(rentalId);
 
         // then
-        Mockito.verify(rentalRepository).deleteById(rentalId);
+        verify(rentalRepository).deleteById(rentalId);
     }
 
     @Test
@@ -235,7 +233,7 @@ class RentalServiceTest {
                 car, new Customer()
         );
         Mockito.when(priceUpdateService.findPriceOnDate(rental.getCar().getId(), rental.getFromDate()))
-                .thenReturn(Optional.of(BigDecimal.valueOf(100)));
+                .thenReturn(BigDecimal.valueOf(100));
 
         // when
         BigDecimal result = underTest.calculateEarning(rental);

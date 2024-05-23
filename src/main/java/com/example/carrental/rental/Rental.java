@@ -3,10 +3,7 @@ package com.example.carrental.rental;
 import com.example.carrental.car.Car;
 import com.example.carrental.customer.Customer;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -16,6 +13,7 @@ import java.util.Objects;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Rental implements Comparable<Rental>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

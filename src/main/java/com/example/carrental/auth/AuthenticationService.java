@@ -35,7 +35,7 @@ public class AuthenticationService {
                 .address(request.getAddress())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-//                .role(Role.CUSTOMER) // TODO should RegisterRequest contains Role ??
+//                .role(Role.CUSTOMER) // TODO should RegisterRequest contains Role ?? change in frontend
                 .role(request.getRole())
                 .build();
 

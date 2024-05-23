@@ -86,7 +86,7 @@ public class ReportPDFService {
             table.addCell(String.valueOf(r.getCar().getId()));
             table.addCell(String.valueOf(r.getCustomer().getId()));
             table.addCell(String.valueOf(Duration.between(r.getFromDate(), r.getToDate()).toDays()));
-            BigDecimal dailyPrice = priceUpdateService.findPriceOnDate(r.getCar().getId(), r.getFromDate()).orElse(BigDecimal.valueOf(0.0));
+            BigDecimal dailyPrice = priceUpdateService.findPriceOnDate(r.getCar().getId(), r.getFromDate());
             table.addCell(String.valueOf(dailyPrice));
             BigDecimal currentEarning = rentalService.calculateEarning(r);
             table.addCell(String.valueOf(currentEarning));

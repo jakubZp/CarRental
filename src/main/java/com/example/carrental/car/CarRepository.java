@@ -12,9 +12,9 @@ import java.util.List;
 @Repository
 public interface CarRepository extends JpaRepository<Car, Long> {
 
-    @Query("select c from Car c")
+    @Query("select c from Car c")//TODO
 //            " left join fetch c.carRents")
-    List<Car> findAllCars(Pageable page);
+    List<Car> findAllCars(Pageable page);// TODO change on Page<Car>
 
     @Query("SELECT c " +
             "FROM Car c " +

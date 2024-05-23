@@ -14,7 +14,7 @@ const Home = () => {
         <div className="home">
             <SearchForm setAvailableCars={setAvailableCars} />
             {availableCars && availableCars.map(car => (
-                <CarItem car={car} key={car.id}/>
+                <CarItem car={car} key={car.carId}/>
             ))}
         </div>
     )

@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import "./sign-up-form.styles.css";
+import { useNavigate } from "react-router-dom";
+import UserContext from "../../contexts/user.context";
 
 const SignUpForm = () => {
     const [firstName, setFirstName] = useState('');
@@ -12,9 +14,37 @@ const SignUpForm = () => {
     const [confirmPassword, setConfirmPassword] = useState("");
 
     const [error, setError] = useState(false);
+    const {setUser} = useContext(UserContext)
+    const navigate = useNavigate();
 
-    const handleSubmit = () => {
-        console.log("Registered!");
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch(`http://localhost:8080/api/v1/auth/register`, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    firstName: firstName,
+                    lastName: lastName,
+                    phoneNumber: phoneNumber,
+                    address: address,
+                    email: email,
+                    password: password,
+                    role: "CUSTOMER" //TODO
+                }),
+            })
+
+            if(response.ok) {
+                const data = await response.json();
+                const roles = data?.role;
+                const token = data?.token;
+                setUser({roles, token});
+                navigate('/cars');
+            }
+
+        } catch(error) {
+
+        }
     }
 
     const validatePassword = (e) => {

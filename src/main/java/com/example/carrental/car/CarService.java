@@ -35,7 +35,7 @@ public class CarService {
 
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     @Transactional
-    public Car addCar(Car car) {
+    public Car addCar(Car car) {//TODO DTO
         PriceUpdate priceUpdate = new PriceUpdate(
                 null, LocalDateTime.now(), car.getActualDailyPrice(), car);
         priceUpdateRepository.save(priceUpdate);
@@ -50,7 +50,7 @@ public class CarService {
 
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     @Transactional
-    public Car updateCar(long id, Car updatedCar) {
+    public Car updateCar(long id, Car updatedCar) {//TODO DTO
         Car c = carRepository.findById(id).orElseThrow(() -> {
             throw new IllegalStateException("car with id " + id + " does not exists! Cannot update.");
         });

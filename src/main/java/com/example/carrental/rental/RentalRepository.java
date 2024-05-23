@@ -21,7 +21,7 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
     @Query("select r from Rental r" +
             " left join fetch r.car" +
             " left join fetch r.customer")
-    List<Rental> findAllRentals();
+    List<Rental> findAllRentals();//TODO n+1 ?
 
     List<Rental> findAllByFromDateBetween(LocalDateTime fromDate, LocalDateTime toDate);
 

@@ -2,13 +2,14 @@ import { useContext, useState, useEffect } from "react";
 import UserContext from "../../contexts/user.context";
 
 import "./sign-in-form.styles.css";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const SignInForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const {setUser} = useContext(UserContext);
     const [error, setError] = useState(false);
+    const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
 
@@ -43,6 +44,7 @@ const SignInForm = () => {
                 //     JSON.stringify({ roles, token })
                 // );
                 setUser({roles, token});
+                navigate(from, { replace: true });
             }
             else if(response.status === 403) {
                 setError(true);

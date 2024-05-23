@@ -10,39 +10,47 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
+@ExtendWith(MockitoExtension.class)
 class CarServiceTest {
 
-    @Mock
-    private CarRepository carRepository;
-    @Mock
-    private PriceUpdateRepository priceUpdateRepository;
-    private CarService underTest;
-
-    @BeforeEach
-    void setup() {
-        underTest = new CarService(carRepository, priceUpdateRepository);
-    }
+    @Mock private CarRepository carRepository;
+    @Mock private PriceUpdateRepository priceUpdateRepository;
+    @InjectMocks private CarService underTest;
+    private final int page = 0;
+    private final int pageSize = 10;
 
     @Test
     public void should_getAllCars() {
+        // given
+        final List<Car> findAllResult = List.of(Car.builder().build());
+        when(carRepository.findAllCars(Mockito.any(PageRequest.class))).thenReturn(findAllResult);
+
         // when
-        underTest.getAllCars(0, 10);
+        final List<Car> findCarsResult = underTest.getAllCars(page, pageSize);
 
         // then
-        Mockito.verify(carRepository).findAllCars(Mockito.any(PageRequest.class));
+        verify(carRepository).findAllCars(Mockito.any(PageRequest.class));
+        assertThat(findCarsResult).isEqualTo(findAllResult);
     }
 
     @Test
@@ -52,13 +60,13 @@ class CarServiceTest {
                   new BigDecimal(100), null, null);
 
         long carId = car.getId();
-        Mockito.when(carRepository.findById(carId)).thenReturn(Optional.of(car));
+        when(carRepository.findById(carId)).thenReturn(Optional.of(car));
 
         // when
         Car result = underTest.getSingleCar(carId);
 
         // then
-        Mockito.verify(carRepository).findById(carId);
+        verify(carRepository).findById(carId);
         assertThat(result).isEqualTo(car);
     }
 
@@ -75,7 +83,7 @@ class CarServiceTest {
         // then
         String message = "car with id " + carId + " does not exists!";
         Assertions.assertThat(thrown).hasMessage(message);
-        Mockito.verify(carRepository).findById(carId);
+        verify(carRepository).findById(carId);
     }
 
     @Test
@@ -89,7 +97,7 @@ class CarServiceTest {
 
         // then
         ArgumentCaptor<Car> carArgumentCaptor = ArgumentCaptor.forClass(Car.class);
-        Mockito.verify(carRepository)
+        verify(carRepository)
                 .save(carArgumentCaptor.capture());
 
         Car capturedCar = carArgumentCaptor.getValue();
@@ -108,7 +116,7 @@ class CarServiceTest {
         underTest.deleteCar(carId);
 
         // then
-        Mockito.verify(carRepository).deleteById(carId);
+        verify(carRepository).deleteById(carId);
     }
 
     @Test
@@ -121,7 +129,7 @@ class CarServiceTest {
                 new BigDecimal(150), null, null);
 
         long carId = car.getId();
-        Mockito.when(carRepository.findById(carId)).thenReturn(Optional.of(car));
+        when(carRepository.findById(carId)).thenReturn(Optional.of(car));
 
         // when
         Car result = underTest.updateCar(carId, updatedCar);
@@ -145,6 +153,39 @@ class CarServiceTest {
         // then
         String message = "car with id " + carId + " does not exists! Cannot update.";
         assertThat(thrown).hasMessage(message);
+    }
+
+    @Test
+    public void should_throwException_whenFromDateIsAfterToDate() {
+        // given
+        LocalDateTime fromDate = LocalDateTime.parse("2023-05-20T10:00");
+        LocalDateTime toDate = LocalDateTime.parse("2023-05-10T10:00");
+
+        // when
+        Throwable thrown = Assertions.catchThrowable(() -> {
+            underTest.getAvailableCarsBetweenDates(fromDate, toDate, page, pageSize);
+        });
+
+        // then
+        String message = "start date should be after end date";
+        assertThat(thrown).hasMessage(message);
+    }
+
+    @Test
+    public void should_returnAvailableCars_betweenDates() {
+        // given
+        LocalDateTime fromDate = LocalDateTime.parse("2023-05-10T10:00");
+        LocalDateTime toDate = LocalDateTime.parse("2023-05-20T10:00");
+        final PageRequest pageRequest = PageRequest.of(page, pageSize);
+        final List<Car> findAvailableResult = List.of(new Car());
+        when(carRepository.findAvailableCarsBetweenDates(fromDate, toDate, pageRequest))
+                .thenReturn(findAvailableResult);
+
+        // when
+        List<Car> result = underTest.getAvailableCarsBetweenDates(fromDate, toDate, page, pageSize);
+
+        // then
+        assertThat(result).isEqualTo(findAvailableResult);
     }
 
 }
