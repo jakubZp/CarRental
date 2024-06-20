@@ -1,6 +1,7 @@
 package com.example.carrental.car;
 
 import com.example.carrental.car.Car;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,9 +13,7 @@ import java.util.List;
 @Repository
 public interface CarRepository extends JpaRepository<Car, Long> {
 
-    @Query("select c from Car c")//TODO
-//            " left join fetch c.carRents")
-    List<Car> findAllCars(Pageable page);// TODO change on Page<Car>
+    Page<Car> findAll(Pageable page);
 
     @Query("SELECT c " +
             "FROM Car c " +

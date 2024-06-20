@@ -5,6 +5,7 @@ import com.example.carrental.priceUpdate.PriceUpdate;
 import com.example.carrental.priceUpdate.PriceUpdateRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -21,10 +22,10 @@ public class CarService {
     private final CarRepository carRepository;
     private final PriceUpdateRepository priceUpdateRepository;
 
-    public List<Car> getAllCars(Integer page, Integer size) {
+    public Page<Car> getAllCars(Integer page, Integer size) {
         int pageNumber = page != null && page > 0 ? page : 0;
         int pageSize   = size != null && size > 0 ? size : 10;
-        return carRepository.findAllCars(PageRequest.of(pageNumber, pageSize));
+        return carRepository.findAll(PageRequest.of(pageNumber, pageSize));
     }
 
     public Car getSingleCar(long id) {

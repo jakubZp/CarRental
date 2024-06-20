@@ -38,18 +38,19 @@ class CarServiceTest {
     @InjectMocks private CarService underTest;
     private final int page = 0;
     private final int pageSize = 10;
+    private final Pageable pageable = Mockito.mock(Pageable.class);
 
     @Test
     public void should_getAllCars() {
         // given
-        final List<Car> findAllResult = List.of(Car.builder().build());
-        when(carRepository.findAllCars(Mockito.any(PageRequest.class))).thenReturn(findAllResult);
+        final Page<Car> findAllResult = new PageImpl<>(List.of(Car.builder().build()), pageable, 1);
+        when(carRepository.findAll(Mockito.any(PageRequest.class))).thenReturn(findAllResult);
 
         // when
-        final List<Car> findCarsResult = underTest.getAllCars(page, pageSize);
+        final Page<Car> findCarsResult = underTest.getAllCars(page, pageSize);
 
         // then
-        verify(carRepository).findAllCars(Mockito.any(PageRequest.class));
+        verify(carRepository).findAll(Mockito.any(PageRequest.class));
         assertThat(findCarsResult).isEqualTo(findAllResult);
     }
 
