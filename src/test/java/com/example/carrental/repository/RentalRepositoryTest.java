@@ -52,11 +52,10 @@ class RentalRepositoryTest {
     @Test
     public void shouldReturn_EmptyList_whenDatesNotOverlapped() {
         // given
-        Rental r1 = new Rental(1L,
-                LocalDateTime.parse("2023-05-10T10:00"),
-                LocalDateTime.parse("2023-05-20T10:00"),
-                car,
-                customer);
+        Rental r1 = Rental.builder()
+                .fromDate(LocalDateTime.parse("2023-05-10T10:00"))
+                .toDate(LocalDateTime.parse("2023-05-20T10:00"))
+                .build();
         underTest.save(r1);
 
         // when

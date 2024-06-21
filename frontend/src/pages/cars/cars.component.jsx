@@ -28,7 +28,7 @@ const Cars = () => {
             <div className="cars-list">
                 <h2 className="header">Choose perfect car for rent</h2>
                 {cars.map(car => (
-                    <CarItem car={car} key={car.id}/>
+                    <CarItem car={car} key={car.carId}/>
                 ))}
             </div>
             <div className="cars-footer">*prices for daily rental</div>

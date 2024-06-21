@@ -19,7 +19,7 @@ const SearchForm = ({setAvailableCars}) => {
                     setAvailableCars(dataJson);
                 }
                 else {
-                    console.log("fetch exception, start date greater than to date");
+                    console.log("fetch exception, start date greater than end date");
                     setAvailableCars(null);
                 }
                 // console.log('from: %s\n to: %s\n location: %s\n', fromDate, toDate, location);

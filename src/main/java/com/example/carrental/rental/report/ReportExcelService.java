@@ -56,7 +56,7 @@ public class ReportExcelService {
             dataRow.createCell(4).setCellValue(current.getCustomer().getId());
             dataRow.createCell(5).setCellValue(Duration.between(current.getFromDate(), current.getToDate()).toDays());
             BigDecimal dailyPrice = priceUpdateService.findPriceOnDate(
-                    current.getCar().getId(), current.getFromDate()).orElse(BigDecimal.valueOf(0.0)
+                    current.getCar().getId(), current.getFromDate()
             );
             dataRow.createCell(6, CellType.NUMERIC).setCellValue(dailyPrice.doubleValue());
             BigDecimal currentEarning = rentalService.calculateEarning(current);

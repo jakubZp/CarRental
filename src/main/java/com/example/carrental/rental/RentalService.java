@@ -82,8 +82,7 @@ public class RentalService {
     public BigDecimal calculateEarning(Rental r) {
         BigDecimal result;
         long days = Duration.between(r.getFromDate(), r.getToDate()).toDays();
-        Optional<BigDecimal> priceOnStartingDay = priceUpdateService.findPriceOnDate(r.getCar().getId(), r.getFromDate());
-        BigDecimal price = priceOnStartingDay.orElse(BigDecimal.valueOf(0.0));
+        BigDecimal price = priceUpdateService.findPriceOnDate(r.getCar().getId(), r.getFromDate());
 
         result = BigDecimal.valueOf(days).multiply(price);
 

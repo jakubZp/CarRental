@@ -1,5 +1,6 @@
 package com.example.carrental.config;
 
+import com.example.carrental.exceptions.CannotFindPriceException;
 import com.example.carrental.exceptions.DateNotValidException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,8 +14,8 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(DateNotValidException.class)
-    public Map<String, String> handleDateException(DateNotValidException dateException) {
+    @ExceptionHandler({DateNotValidException.class, CannotFindPriceException.class})
+    public Map<String, String> handleDateException(RuntimeException dateException) {
         Map <String, String> error = new HashMap<>();
         String fieldName = "error";
         String message = dateException.getMessage();

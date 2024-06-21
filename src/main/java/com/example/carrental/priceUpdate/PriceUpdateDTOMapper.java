@@ -1,7 +1,5 @@
 package com.example.carrental.priceUpdate;
 
-import com.example.carrental.priceUpdate.PriceUpdateDTO;
-import com.example.carrental.priceUpdate.PriceUpdate;
 import org.springframework.stereotype.Service;
 
 import java.util.function.Function;
@@ -11,9 +9,9 @@ public class PriceUpdateDTOMapper implements Function<PriceUpdate, PriceUpdateDT
     @Override
     public PriceUpdateDTO apply(PriceUpdate priceUpdate) {
         return new PriceUpdateDTO(
-                priceUpdate.getId(),
                 priceUpdate.getUpdateDate(),
                 priceUpdate.getPrice(),
-                priceUpdate.getCar().getId());
+                priceUpdate.getCar().getId()
+        );
     }
 }
