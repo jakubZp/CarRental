@@ -1,60 +1,35 @@
-package com.example.carrental.controller;
+package com.example.carrental.rental;
 
-import com.example.carrental.auth.AuthenticationController;
-import com.example.carrental.auth.AuthenticationRequest;
 import com.example.carrental.auth.RegisterRequest;
 import com.example.carrental.car.Car;
 import com.example.carrental.car.CarRepository;
-import com.example.carrental.config.JwtService;
+import com.example.carrental.config.EnableTestcontainers;
 import com.example.carrental.customer.Customer;
 import com.example.carrental.customer.CustomerRepository;
-import com.example.carrental.employee.Employee;
-import com.example.carrental.employee.EmployeeRepository;
-import com.example.carrental.rental.Rental;
-import com.example.carrental.rental.RentalRepository;
 import com.example.carrental.user.Role;
-import com.example.carrental.user.User;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Testcontainers
-@ExtendWith(MockitoExtension.class)
-class RentalControllerTest {
+@EnableTestcontainers
+class RentalControllerIT {
 
     @LocalServerPort
     private Integer port;
-
-    @Container
-    @ServiceConnection
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15-alpine");
 
     @Autowired
     RentalRepository rentalRepository;

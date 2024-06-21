@@ -1,4 +1,4 @@
-package com.example.carrental.service;
+package com.example.carrental.car;
 
 
 import com.example.carrental.car.Car;

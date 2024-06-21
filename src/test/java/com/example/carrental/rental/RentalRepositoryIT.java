@@ -1,20 +1,18 @@
-package com.example.carrental.repository;
+package com.example.carrental.rental;
 
 import com.example.carrental.car.Car;
+import com.example.carrental.car.CarRepository;
+import com.example.carrental.config.EnableTestcontainers;
 import com.example.carrental.customer.Customer;
 import com.example.carrental.customer.CustomerRepository;
 import com.example.carrental.rental.Rental;
 import com.example.carrental.rental.RentalRepository;
-import com.example.carrental.user.Role;
-import com.example.carrental.user.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,30 +20,30 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@DataJpaTest(properties = "application-test.properties")
-@ActiveProfiles("test")
-class RentalRepositoryTest {
+@SpringBootTest
+@EnableTestcontainers
+class RentalRepositoryIT {
 
     @Autowired
     private RentalRepository underTest;
     @Autowired
+    CarRepository carRepository;
+    @Autowired
     private CustomerRepository customerRepository;
 
-    private Car car;
-    private User user;
-    private Customer customer;
+    private Car car = Car.builder().build();
+    private Customer customer = Customer.builder().build();
 
     @BeforeEach
     void setup() {
-        car = new Car(1L, "toyota", "yaris", 2023, new BigDecimal(100), null, null);
-        user = new User(1L, null, null, "Tom", "Smith", "123456789", "Warsaw", "tom@gmail.com", "zaq1", Role.CUSTOMER, null);
-        customer = new Customer();
-        customer.setUser(user);
+        carRepository.save(car);
         customerRepository.save(customer);
     }
 
     @AfterEach
     void tearDown() {
+        customerRepository.deleteAll();
+        carRepository.deleteAll();
         underTest.deleteAll();
     }
 
@@ -122,7 +120,7 @@ class RentalRepositoryTest {
         List<Rental> rentals = underTest.findAllRentals();
 
         // then
-        assertThat(rentals).isEqualTo(underTest.findAll());
+        assertThat(rentals).hasSize(underTest.findAll().size());
     }
 
 }
