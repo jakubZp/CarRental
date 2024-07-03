@@ -1,4 +1,4 @@
-package com.example.carrental.config;
+package com.example.carrental.integrationTestsHelpers;
 
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;

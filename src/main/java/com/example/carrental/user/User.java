@@ -29,7 +29,7 @@ public class User implements UserDetails {
     private Long id;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonIgnore
+    @JsonIgnore//TODO
     private Customer customer;
 
     @OneToOne(mappedBy = "user")

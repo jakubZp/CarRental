@@ -1,6 +1,6 @@
 package com.example.carrental.car;
 
-import com.example.carrental.config.EnableTestcontainers;
+import com.example.carrental.integrationTestsHelpers.EnableTestcontainers;
 import com.example.carrental.rental.Rental;
 import com.example.carrental.rental.RentalRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @EnableTestcontainers
+@Transactional
 class CarRepositoryIT {
 
     @Autowired

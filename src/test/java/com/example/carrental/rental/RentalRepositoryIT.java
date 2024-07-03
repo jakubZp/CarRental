@@ -2,16 +2,15 @@ package com.example.carrental.rental;
 
 import com.example.carrental.car.Car;
 import com.example.carrental.car.CarRepository;
-import com.example.carrental.config.EnableTestcontainers;
 import com.example.carrental.customer.Customer;
 import com.example.carrental.customer.CustomerRepository;
-import com.example.carrental.rental.Rental;
-import com.example.carrental.rental.RentalRepository;
+import com.example.carrental.integrationTestsHelpers.EnableTestcontainers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,29 +21,28 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @EnableTestcontainers
+@Transactional
 class RentalRepositoryIT {
 
     @Autowired
     private RentalRepository underTest;
     @Autowired
-    CarRepository carRepository;
+    private CarRepository carRepository;
     @Autowired
     private CustomerRepository customerRepository;
 
-    private Car car = Car.builder().build();
-    private Customer customer = Customer.builder().build();
+    private Car car = Car.builder().build();;
+    private Customer customer;
 
     @BeforeEach
     void setup() {
         carRepository.save(car);
-        customerRepository.save(customer);
+        customer = customerRepository.findAllCustomers().get(0);
     }
 
     @AfterEach
     void tearDown() {
-        customerRepository.deleteAll();
         carRepository.deleteAll();
-        underTest.deleteAll();
     }
 
     @Test

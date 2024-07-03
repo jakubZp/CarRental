@@ -2,12 +2,13 @@ package com.example.carrental.priceUpdate;
 
 import com.example.carrental.car.Car;
 import com.example.carrental.car.CarRepository;
-import com.example.carrental.config.EnableTestcontainers;
+import com.example.carrental.integrationTestsHelpers.EnableTestcontainers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @EnableTestcontainers
+@Transactional
 class PriceUpdateRepositoryIT {
 
     @Autowired

@@ -1,29 +1,29 @@
 package com.example.carrental.rental;
 
-import com.example.carrental.auth.RegisterRequest;
 import com.example.carrental.car.Car;
 import com.example.carrental.car.CarRepository;
-import com.example.carrental.config.EnableTestcontainers;
 import com.example.carrental.customer.Customer;
 import com.example.carrental.customer.CustomerRepository;
-import com.example.carrental.user.Role;
+import com.example.carrental.integrationTestsHelpers.AuthHelper;
+import com.example.carrental.integrationTestsHelpers.EnableTestcontainers;
+import com.example.carrental.user.TokenRepository;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import io.restassured.path.json.JsonPath;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.test.context.ActiveProfiles;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 
-@ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EnableTestcontainers
 class RentalControllerIT {
@@ -37,51 +37,37 @@ class RentalControllerIT {
     CarRepository carRepository;
     @Autowired
     CustomerRepository customerRepository;
+    @Autowired
+    TokenRepository tokenRepository;
+
+    private List<Car> cars;
+    private List<Customer> customers;
+    private String employeeToken;
 
     @BeforeEach
-    void setUp() {
+    void setup() {
         RestAssured.baseURI = "http://localhost:" + port;
-        rentalRepository.deleteAll();
-    }
 
-    private String registerEmployeeAndGetJWTToken() {
-        String response = given()
-                .contentType(ContentType.JSON)
-                .body(RegisterRequest.builder()
-                        .email("employee@gmail.com")
-                        .password("test")
-                        .role(Role.EMPLOYEE)
-                        .build())
-                .when()
-                .post("/api/v1/auth/register")
-                .then()
-                .statusCode(200)
-                .extract()
-                .response()
-                .asString();
-
-        return JsonPath.from(response).getString("token");
-    }
-
-    @Test
-    public void should_getAllRentals_withLogin() {
-        // given
-        List<Car> cars = new ArrayList<>(
-                List.of(
-                        Car.builder().id(1L).build(),
-                        Car.builder().id(2L).build()
-                )
+        cars = List.of(
+                Car.builder().build(),
+                Car.builder().build()
         );
         carRepository.saveAll(cars);
 
-        List<Customer> customers = new ArrayList<>(
-                List.of(
-                        Customer.builder().id(1L).build(),
-                        Customer.builder().id(2L).build()
-                )
-        );
-        customerRepository.saveAll(customers);
+        customers = customerRepository.findAllCustomers();
+        employeeToken = AuthHelper.loginEmployeeAndGetJWTToken();
+    }
 
+    @AfterEach
+    void tearDown() {
+        rentalRepository.deleteAll();
+        carRepository.deleteAll();
+        tokenRepository.deleteAll();
+    }
+
+    @Test
+    public void should_getAllRentals_withEmployeeLogin() {
+        // given
         List<Rental> rentals = List.of(
                 Rental.builder()
                         .car(cars.get(0))
@@ -94,12 +80,10 @@ class RentalControllerIT {
         );
         rentalRepository.saveAll(rentals);
 
-        String token = registerEmployeeAndGetJWTToken();
-
         // when, then
         given()
                 .contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + employeeToken)
                 .when()
                 .get("api/v1/rentals")
                 .then()
@@ -108,7 +92,35 @@ class RentalControllerIT {
     }
 
     @Test
-    public void shouldNot_GetAllRentals_withoutLogin() {
+    public void shouldGet_oneRentalById() {
+        // given
+        List<Rental> rentals = List.of(
+                Rental.builder()
+                        .car(cars.get(0))
+                        .customer(customers.get(0))
+                        .build(),
+                Rental.builder()
+                        .car(cars.get(1))
+                        .customer(customers.get(1))
+                        .build()
+        );
+        rentalRepository.saveAll(rentals);
+
+        int id = rentalRepository.findAllRentals().get(0).getId().intValue();
+
+        // when, then
+        given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + employeeToken)
+                .when()
+                .get("api/v1/rentals/" + id)
+                .then()
+                .statusCode(200)
+                .body("rentalId", equalTo(id));
+    }
+
+    @Test
+    public void shouldNot_GetAllRentals_withoutEmployeeLogin() {
         // given
         List<Rental> rentals = List.of(
                 Rental.builder().build(),
@@ -123,6 +135,28 @@ class RentalControllerIT {
                 .get("api/v1/rentals")
                 .then()
                 .statusCode(403);
+    }
+
+    @Test
+    public void shouldAddRental_withEmployeeLogin() {
+        // given
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("fromDate", "2024-09-19T12:00:00");
+        requestBody.put("toDate", "2024-09-27T12:00:00");
+        requestBody.put("carId", cars.get(0).getId().intValue());
+        requestBody.put("customerId", customers.get(0).getId().intValue());
+
+        // when, then
+        given()
+                .contentType("application/json")
+                .header("Authorization", "Bearer " + employeeToken)
+                .body(requestBody)
+                .when()
+                .post("api/v1/rentals")
+                .then()
+                .statusCode(200)
+                .header("Content-Type", "application/json")
+                .body("rentalId", notNullValue());
     }
 
 }

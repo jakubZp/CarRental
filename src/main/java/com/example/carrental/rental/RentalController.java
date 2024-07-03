@@ -34,8 +34,8 @@ public class RentalController {
     }
 
     @PostMapping
-    public Rental addRental(@RequestBody RentalDTO rentalDTO) {
-        return rentalService.addRental(rentalDTO);
+    public RentalDTO addRental(@RequestBody RentalDTO rentalDTO) {
+        return rentalDTOMapper.apply(rentalService.addRental(rentalDTO));
     }
 
     @DeleteMapping("/{id}")

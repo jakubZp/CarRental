@@ -8,6 +8,7 @@ import com.example.carrental.priceUpdate.PriceUpdateService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -37,6 +38,7 @@ public class RentalService {
     }
 
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'ADMIN', 'CUSTOMER')")
+    @Transactional
     public Rental addRental(RentalDTO rentalDTO) {
         Car c = carRepository.findById(rentalDTO.carId()).orElseThrow(() -> {
             throw new IllegalStateException("car with id " + rentalDTO.carId() + " does not exists.");

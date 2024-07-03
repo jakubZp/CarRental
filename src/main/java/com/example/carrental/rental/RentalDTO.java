@@ -1,8 +1,5 @@
 package com.example.carrental.rental;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 import java.time.LocalDateTime;
 
 

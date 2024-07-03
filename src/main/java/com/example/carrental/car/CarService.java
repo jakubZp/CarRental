@@ -36,7 +36,7 @@ public class CarService {
 
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     @Transactional
-    public Car addCar(Car car) {//TODO DTO
+    public Car addCar(Car car) {//TODO DTO, validation
         PriceUpdate priceUpdate = new PriceUpdate(
                 null, LocalDateTime.now(), car.getActualDailyPrice(), car);
         priceUpdateRepository.save(priceUpdate);
