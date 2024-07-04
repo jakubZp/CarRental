@@ -12,9 +12,9 @@ import java.util.List;
 public interface RentalRepository extends JpaRepository<Rental, Long> {
 
     @Query("SELECT r FROM Rental r" +
-            "    WHERE ?2 BETWEEN r.fromDate AND r.toDate" +
+            "    WHERE ( " + " ?2 BETWEEN r.fromDate AND r.toDate" +
             "          OR ?3 BETWEEN r.fromDate AND r.toDate" +
-            "          OR (?2 <= r.fromDate AND ?3 >= r.toDate)" +
+            "          OR (?2 <= r.fromDate AND ?3 >= r.toDate))" +
             "    AND r.car = ?1")
     List<Rental> findByCarAndDatesOverlap(Car c, LocalDateTime fromDate, LocalDateTime toDate);
 

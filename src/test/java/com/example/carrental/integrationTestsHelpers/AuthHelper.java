@@ -24,4 +24,22 @@ public class AuthHelper {
 
         return JsonPath.from(response).getString("token");
     }
+
+    public static String loginCustomerAndGetJWTToken() {
+        String response = given()
+                .contentType(ContentType.JSON)
+                .body(AuthenticationRequest.builder()
+                        .email("test@customer.com")
+                        .password("test")
+                        .build())
+                .when()
+                .post("/api/v1/auth/login")
+                .then()
+                .statusCode(200)
+                .extract()
+                .response()
+                .asString();
+
+        return JsonPath.from(response).getString("token");
+    }
 }

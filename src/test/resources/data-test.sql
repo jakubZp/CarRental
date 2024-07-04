@@ -1,8 +1,10 @@
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
 INSERT INTO _user (user_id, first_name, last_name, phone_number, address, email, password, role)
-    VALUES (1, 'Tom', 'Smith', '123456789', 'Warsaw', 'test@customer.com', 'test', 'CUSTOMER');
+    VALUES (1, 'Tom', 'Smith', '123456789', 'Warsaw', 'test@customer.com', crypt('test', gen_salt('bf')), 'CUSTOMER');
 INSERT INTO customer (user_id) VALUES (1);
 INSERT INTO _user (user_id, first_name, last_name, phone_number, address, email, password, role)
-    VALUES (2, 'John', 'Snow', '121451759', 'Warsaw', 'testsecond@customer.com', 'test', 'CUSTOMER');
+    VALUES (2, 'John', 'Snow', '121451759', 'Warsaw', 'testsecond@customer.com', crypt('test', gen_salt('bf')), 'CUSTOMER');
 INSERT INTO customer (user_id) VALUES (2);
 
 INSERT INTO _user (user_id, first_name, last_name, phone_number, address, email, password, role)
