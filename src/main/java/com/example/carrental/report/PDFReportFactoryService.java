@@ -1,7 +1,9 @@
-package com.example.carrental.rental.report;
+package com.example.carrental.report;
 
-import com.example.carrental.rental.Rental;
 import com.example.carrental.priceUpdate.PriceUpdateService;
+import com.example.carrental.rental.Rental;
+import com.example.carrental.rental.RentalDTO;
+import com.example.carrental.rental.RentalDTOMapper;
 import com.example.carrental.rental.RentalService;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPCell;
@@ -21,13 +23,14 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ReportPDFService {
+public class PDFReportFactoryService implements ReportFactory{
 
     private final RentalService rentalService;
     private final PriceUpdateService priceUpdateService;
     private BigDecimal earnedMoney = BigDecimal.ZERO;
 
-    public void generateRentalsReport(List<Rental> rentals, HttpServletResponse response) {
+    @Override
+    public void generateReportForRentals(List<Rental> rentals, HttpServletResponse response) {
 
         response.setContentType("application/pdf");
         String headerkey = "Content-Disposition";
@@ -57,11 +60,9 @@ public class ReportPDFService {
         document.add(footer);
 
         document.close();
-
     }
 
     private void addRentalsTable(Document document, List<Rental> rentals) {
-
         String [] columnNames = {"rental id", "from date", "to date", "car id", "customer id", "days", "daily price", "earning"};
         PdfPTable table = new PdfPTable(columnNames.length);
         table.setWidthPercentage(100f);
@@ -78,7 +79,6 @@ public class ReportPDFService {
             table.addCell(cell);
         }
 
-        //Collections.sort(rentals);
         for(Rental r: rentals) {
             table.addCell(String.valueOf(r.getId()));
             table.addCell(String.valueOf(r.getFromDate()));
@@ -95,17 +95,4 @@ public class ReportPDFService {
 
         document.add(table);
     }
-
-//    public BigDecimal calculateEarning(Rental r) {
-//        BigDecimal result;
-//        long days = Duration.between(r.getFromDate(), r.getToDate()).toDays();
-//        Optional<BigDecimal> priceOnStartingDay = priceUpdateService.findPriceOnDate(r.getCar().getId(), r.getFromDate());
-//        BigDecimal price = priceOnStartingDay.orElse(BigDecimal.valueOf(0.0));
-//
-//        result = BigDecimal.valueOf(days).multiply(price);
-//
-//        earnedMoney = earnedMoney.add(result);
-//
-//        return result;
-//    }
 }

@@ -13,8 +13,6 @@ public class RentalController {
 
     private final RentalService rentalService;
     private final RentalDTOMapper rentalDTOMapper;
-//    private final ReportPDFService reportPDF;
-//    private final ReportExcelService reportExcel;
 
     @GetMapping()
     public List<RentalDTO> getRentals() {

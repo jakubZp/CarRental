@@ -1,7 +1,7 @@
-package com.example.carrental.rental.report;
+package com.example.carrental.report;
 
-import com.example.carrental.rental.Rental;
 import com.example.carrental.priceUpdate.PriceUpdateService;
+import com.example.carrental.rental.Rental;
 import com.example.carrental.rental.RentalService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -18,13 +18,13 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ReportExcelService {
+public class ExcelReportFactoryService implements ReportFactory{
 
     private final PriceUpdateService priceUpdateService;
     private final RentalService rentalService;
     private BigDecimal earnedMoney = BigDecimal.ZERO;
-
-    public void generateRentalsReport(List<Rental> rentals, HttpServletResponse response) {
+    @Override
+    public void generateReportForRentals(List<Rental> rentals, HttpServletResponse response) {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Report");
 
@@ -68,7 +68,7 @@ public class ReportExcelService {
         String headerKey = "Content-Disposition";
         LocalDateTime fromDate = rentals.get(0).getFromDate();
         LocalDateTime toDate = rentals.get(rentals.size()-1).getToDate();
-        String headerValue = "attachment; filename=rentals" + ".xlsx";
+        String headerValue = "attachment; filename=rentals" + fromDate + "_to_" + toDate + ".xlsx";
         response.setHeader(headerKey, headerValue);
 
         // TODO try with resources

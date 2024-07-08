@@ -113,13 +113,9 @@ public class RentalService {
 
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'ADMIN')")
     public BigDecimal calculateEarning(Rental r) {
-        BigDecimal result;
         long days = Duration.between(r.getFromDate(), r.getToDate()).toDays();
         BigDecimal price = priceUpdateService.findPriceOnDate(r.getCar().getId(), r.getFromDate());
-
-        result = BigDecimal.valueOf(days).multiply(price);
-
-        return result;
+        return BigDecimal.valueOf(days).multiply(price);
     }
 
 }
