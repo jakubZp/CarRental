@@ -33,7 +33,6 @@ public class Rental implements Comparable<Rental>{
         if (o == null || getClass() != o.getClass()) return false;
         Rental rental = (Rental) o;
         return fromDate.equals(rental.fromDate) && toDate.equals(rental.toDate) && car.equals(rental.car) && customer.equals(rental.customer);
-        //TODO?? id.equals(rental.id): it should be true but its better without it because id is unique and with it objects won't be equals anytime
     }
 
     @Override

@@ -21,8 +21,6 @@ public class Token {
     private TokenType tokenType;
     private boolean expired;
     private boolean revoked;
-
     @ManyToOne
-//    @JoinColumn(name = "user_id")//TODO? needed?
     private User user;
 }

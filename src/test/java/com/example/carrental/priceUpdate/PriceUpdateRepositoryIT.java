@@ -1,29 +1,48 @@
-package com.example.carrental.repository;
+package com.example.carrental.priceUpdate;
 
 import com.example.carrental.car.Car;
-import com.example.carrental.priceUpdate.PriceUpdate;
-import com.example.carrental.priceUpdate.PriceUpdateRepository;
+import com.example.carrental.car.CarRepository;
+import com.example.carrental.integrationTestsHelpers.EnableTestcontainers;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.*;
 
-@DataJpaTest(properties = "application-test.properties")
-@ActiveProfiles("test")
-class PriceUpdateRepositoryTest {
+@SpringBootTest
+@EnableTestcontainers
+@Transactional
+class PriceUpdateRepositoryIT {
 
     @Autowired
     private PriceUpdateRepository underTest;
+    @Autowired
+    CarRepository carRepository;
+    private final Car car = Car.builder()
+                            .actualDailyPrice(BigDecimal.valueOf(100))
+                            .build();
+
+    @BeforeEach
+    public void setup() {
+        carRepository.save(car);
+    }
+
+    @AfterEach
+    public void afterEach() {
+        underTest.deleteAll();
+        carRepository.deleteAll();
+    }
+
 
     @Test
     public void shouldReturnCorrectPrice_forCarIdAndDate() {
         // given
-        Car car = new Car(1L, "toyota", "yaris", 2023, new BigDecimal(100), null, null);
         PriceUpdate priceUpdate1 = new PriceUpdate(1L, LocalDateTime.parse("2023-06-20T10:00"), BigDecimal.valueOf(150), car);
         PriceUpdate priceUpdate2 = new PriceUpdate(2L, LocalDateTime.parse("2023-06-25T10:00"), BigDecimal.valueOf(130), car);
         PriceUpdate priceUpdate3 = new PriceUpdate(3L, LocalDateTime.parse("2023-06-28T18:10"), BigDecimal.valueOf(100), car);
@@ -36,7 +55,8 @@ class PriceUpdateRepositoryTest {
                 car.getId(), LocalDateTime.parse("2023-06-27T10:00")).orElse(null);
 
         // then
-        assertThat(result.getPrice()).isEqualTo(BigDecimal.valueOf(130));
+        assert result != null;
+        assertThat(result.getPrice()).isEqualByComparingTo(BigDecimal.valueOf(130));
 
     }
 }

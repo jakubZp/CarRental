@@ -1,24 +1,16 @@
-package com.example.carrental.repository;
+package com.example.carrental.car;
 
-import com.example.carrental.car.Car;
-import com.example.carrental.car.CarRepository;
-import com.example.carrental.customer.Customer;
-import com.example.carrental.customer.CustomerRepository;
+import com.example.carrental.integrationTestsHelpers.EnableTestcontainers;
 import com.example.carrental.rental.Rental;
 import com.example.carrental.rental.RentalRepository;
-import com.example.carrental.user.Role;
-import com.example.carrental.user.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,25 +18,29 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-//TODO delete application-test.properties
-@DataJpaTest(properties = "application-test.properties")
-@ActiveProfiles("test")
-class CarRepositoryTest {
+@SpringBootTest
+@EnableTestcontainers
+@Transactional
+class CarRepositoryIT {
 
     @Autowired
     private CarRepository underTest;
     @Autowired
     private RentalRepository rentalRepository;
 
-    private PageRequest page;
+    private final PageRequest page = PageRequest.of(0,10);
+    private final Car c = Car.builder()
+                            .id(1L)
+                            .build();
 
     @BeforeEach
-    void setup() {
-        page = PageRequest.of(0,10);
+    public void setUp() {
+        underTest.save(c);
     }
 
     @AfterEach
-    void tearDown() {
+    public void afterEach() {
+        rentalRepository.deleteAll();
         underTest.deleteAll();
     }
 
@@ -127,7 +123,6 @@ class CarRepositoryTest {
                 .fromDate(LocalDateTime.parse("2023-05-10T10:00"))
                 .toDate(LocalDateTime.parse("2023-05-20T10:00"))
                 .build();
-        rentalRepository.save(r1);
         rentalRepository.save(r1);
 
         // when

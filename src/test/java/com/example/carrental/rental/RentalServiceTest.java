@@ -1,16 +1,13 @@
-package com.example.carrental.service;
+package com.example.carrental.rental;
 
 import com.example.carrental.car.Car;
-import com.example.carrental.customer.Customer;
-import com.example.carrental.priceUpdate.PriceUpdateService;
-import com.example.carrental.rental.RentalDTOMapper;
-import com.example.carrental.rental.Rental;
-import com.example.carrental.rental.RentalService;
 import com.example.carrental.car.CarRepository;
+import com.example.carrental.customer.Customer;
 import com.example.carrental.customer.CustomerRepository;
-import com.example.carrental.rental.RentalRepository;
+import com.example.carrental.priceUpdate.PriceUpdateService;
 import com.example.carrental.user.Role;
 import com.example.carrental.user.User;
+import com.example.carrental.user.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,8 +36,14 @@ class RentalServiceTest {
     @Mock private CarRepository carRepository;
     @Mock private CustomerRepository customerRepository;
     @Mock private PriceUpdateService priceUpdateService;
+    @Mock private UserRepository userRepository;
     private final RentalDTOMapper rentalDTOMapper = new RentalDTOMapper();
-    @InjectMocks private RentalService underTest;
+    @InjectMocks
+    private RentalService underTest = new RentalService(rentalRepository, carRepository, customerRepository, priceUpdateService, userRepository) {
+        @Override
+        protected void validateCustomerIdOwnership(RentalDTO rentalDTO) {
+        }
+    };
     private Car car;
     private User user;
     private Customer customer;
@@ -158,7 +161,7 @@ class RentalServiceTest {
         });
 
         // then
-        String message = "The car is already booked for the selected dates.";
+        String message = "the car is already booked for the selected dates.";
         assertThat(thrown).hasMessage(message);
     }
 

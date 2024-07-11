@@ -10,11 +10,14 @@ INSERT INTO car (brand, model, production_year, actual_daily_price) values ('for
 INSERT INTO car (brand, model, production_year, actual_daily_price) values ('volkswagen', 'golf', 2017, 80);
 INSERT INTO car (brand, model, production_year, actual_daily_price) values ('toyota', 'yaris', 2020, 90);
 
-INSERT INTO price_update (price, update_date, car_id) VALUES (100, '2023-02-23 11:00', 1);
-INSERT INTO price_update (price, update_date, car_id) VALUES (250, '2023-02-23 11:00', 2);
+INSERT INTO price_update (price, update_date, car_id) VALUES (80, '2023-02-23 11:00', 1);
+INSERT INTO price_update (price, update_date, car_id) VALUES (150, '2023-02-23 11:00', 2);
 INSERT INTO price_update (price, update_date, car_id) VALUES (150, '2023-02-23 11:00', 3);
 INSERT INTO price_update (price, update_date, car_id) VALUES (110, '2023-02-23 11:00', 4);
-INSERT INTO price_update (price, update_date, car_id) VALUES (80, '2023-02-23 11:00', 5);
+INSERT INTO price_update (price, update_date, car_id) VALUES (90, '2023-02-23 11:00', 5);
+INSERT INTO price_update (price, update_date, car_id) VALUES (100, '2023-02-23 11:00', 6);
+INSERT INTO price_update (price, update_date, car_id) VALUES (70, '2023-02-23 11:00', 7);
+INSERT INTO price_update (price, update_date, car_id) VALUES (110, '2023-02-23 11:00', 8);
 
 INSERT INTO _user (first_name, last_name, phone_number, address, email, password, role) values ('Jan', 'Kowalski', '123456789', 'Warszawa, Emilii Plater 24', 'jan.kowalski@gmail.com', crypt('zaq12wsx', gen_salt('bf')), 'CUSTOMER');
 INSERT INTO _user (first_name, last_name, phone_number, address, email, password, role) values ('Piotr', 'Nowak', '111222333', 'Warszawa, Niepodległości 44', 'piotr.nowak@gmail.com',  crypt('12345', gen_salt('bf')), 'CUSTOMER');
@@ -47,3 +50,5 @@ INSERT INTO rental (from_date, to_date, car_id, customer_id) values ('2023-08-20
 INSERT INTO rental (from_date, to_date, car_id, customer_id) values ('2024-04-20 10:00', '2024-05-10 10:00', 2, 2);
 INSERT INTO rental (from_date, to_date, car_id, customer_id) values ('2024-04-20 10:00', '2024-04-30 10:00', 3, 4);
 INSERT INTO rental (from_date, to_date, car_id, customer_id) values ('2024-05-20 10:00', '2024-08-30 10:00', 8, 5);
+INSERT INTO rental (from_date, to_date, car_id, customer_id) values ('2024-02-17 10:00', '2024-08-21 10:00', 1, 1);
+INSERT INTO rental (from_date, to_date, car_id, customer_id) values ('2024-06-20 10:00', '2024-06-30 10:00', 2, 3);

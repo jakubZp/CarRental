@@ -13,8 +13,6 @@ public class RentalController {
 
     private final RentalService rentalService;
     private final RentalDTOMapper rentalDTOMapper;
-//    private final ReportPDFService reportPDF;
-//    private final ReportExcelService reportExcel;
 
     @GetMapping()
     public List<RentalDTO> getRentals() {
@@ -34,8 +32,8 @@ public class RentalController {
     }
 
     @PostMapping
-    public Rental addRental(@RequestBody RentalDTO rentalDTO) {
-        return rentalService.addRental(rentalDTO);
+    public RentalDTO addRental(@RequestBody RentalDTO rentalDTO) {
+        return rentalDTOMapper.apply(rentalService.addRental(rentalDTO));
     }
 
     @DeleteMapping("/{id}")

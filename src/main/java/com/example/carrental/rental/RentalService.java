@@ -5,13 +5,21 @@ import com.example.carrental.customer.Customer;
 import com.example.carrental.car.CarRepository;
 import com.example.carrental.customer.CustomerRepository;
 import com.example.carrental.priceUpdate.PriceUpdateService;
+import com.example.carrental.user.Role;
+import com.example.carrental.user.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +31,7 @@ public class RentalService {
     private CarRepository carRepository;
     private CustomerRepository customerRepository;
     private PriceUpdateService priceUpdateService;
+    private UserRepository userRepository;
 
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'ADMIN')")
     public List<Rental> getAllRentals() {
@@ -37,31 +46,58 @@ public class RentalService {
     }
 
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'ADMIN', 'CUSTOMER')")
+    @Transactional
     public Rental addRental(RentalDTO rentalDTO) {
+        validateCustomerIdOwnership(rentalDTO);
+
         Car c = carRepository.findById(rentalDTO.carId()).orElseThrow(() -> {
             throw new IllegalStateException("car with id " + rentalDTO.carId() + " does not exists.");
         });
 
-        Customer p = customerRepository.findById(rentalDTO.customerId()).orElseThrow(() -> {
+        Customer customer = customerRepository.findById(rentalDTO.customerId()).orElseThrow(() -> {
             throw new IllegalStateException("customer with id " + rentalDTO.customerId() + " does not exists.");
         });
 
         LocalDateTime fromDate = rentalDTO.fromDate();
         LocalDateTime toDate = rentalDTO.toDate();
+        if(fromDate == null || toDate == null) {
+            throw new IllegalStateException("dates cannot be null.");
+        }
         List<Rental> overlappingRentals = rentalRepository.findByCarAndDatesOverlap(c, fromDate, toDate);
         if(!overlappingRentals.isEmpty()) {
-            throw new IllegalStateException("The car is already booked for the selected dates.");
+            throw new IllegalStateException("the car is already booked for the selected dates.");
         }
 
         if(fromDate.isAfter(toDate)) {
             throw new IllegalStateException("from date is after to date.");
         }
 
-        Rental rental = new Rental(null, fromDate, toDate, c, p);
+        Rental rental = new Rental(null, fromDate, toDate, c, customer);
         c.getCarRents().add(rental);
-        p.getCustomerRents().add(rental);
+        customer.getCustomerRents().add(rental);
 
         return rentalRepository.save(rental);
+    }
+
+    protected void validateCustomerIdOwnership(RentalDTO rentalDTO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication != null && authentication.getPrincipal() instanceof UserDetails userDetails) {
+            Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
+            boolean isCustomer = authorities.stream()
+                    .anyMatch(authority -> "CUSTOMER".equals(authority.getAuthority()));
+
+            if(isCustomer) {
+                String email = userDetails.getUsername();
+                Long customerId = userRepository.findUserByEmail(email).orElseThrow(() -> {
+                    throw new IllegalStateException("customer with email " + email + " does not exists.");
+                }).getId();
+
+                if(!customerId.equals(rentalDTO.customerId()))
+                    throw new IllegalStateException("customer can only add a rental for himself");
+            }
+        }
+        else
+            throw new IllegalStateException("user is not logged in.");
     }
 
     @PreAuthorize("hasAuthority('EMPLOYEE')") //|| (#id == authentication.principal.customer.id && @rentalRepository.findById(#id).orElse(null).getFromDate().isAfter(LocalDateTime.now())) ")// TODO if user is owner of this rental and fromDate isAfter now we can delete rental
@@ -80,13 +116,9 @@ public class RentalService {
 
     @PreAuthorize("hasAnyAuthority('EMPLOYEE', 'ADMIN')")
     public BigDecimal calculateEarning(Rental r) {
-        BigDecimal result;
         long days = Duration.between(r.getFromDate(), r.getToDate()).toDays();
         BigDecimal price = priceUpdateService.findPriceOnDate(r.getCar().getId(), r.getFromDate());
-
-        result = BigDecimal.valueOf(days).multiply(price);
-
-        return result;
+        return BigDecimal.valueOf(days).multiply(price);
     }
 
 }

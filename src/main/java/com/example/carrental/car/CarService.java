@@ -21,6 +21,7 @@ public class CarService {
 
     private final CarRepository carRepository;
     private final PriceUpdateRepository priceUpdateRepository;
+    private final CarDTOMapper carDTOMapper;
 
     public Page<Car> getAllCars(Integer page, Integer size) {
         int pageNumber = page != null && page > 0 ? page : 0;
@@ -36,12 +37,16 @@ public class CarService {
 
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     @Transactional
-    public Car addCar(Car car) {//TODO DTO
-        PriceUpdate priceUpdate = new PriceUpdate(
-                null, LocalDateTime.now(), car.getActualDailyPrice(), car);
+    public Car addCar(CarDTO car) {
+        Car c = carDTOMapper.mapToCar(car);
+        PriceUpdate priceUpdate = PriceUpdate.builder()
+                .price(car.actualDailyPrice())
+                .updateDate(LocalDateTime.now())
+                .car(c)
+                .build();
         priceUpdateRepository.save(priceUpdate);
 
-        return carRepository.save(car);
+        return carRepository.save(c);
     }
 
     @PreAuthorize("hasAuthority('EMPLOYEE')")
@@ -51,28 +56,28 @@ public class CarService {
 
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     @Transactional
-    public Car updateCar(long id, Car updatedCar) {//TODO DTO
+    public Car updateCar(long id, CarDTO updatedCar) {
         Car c = carRepository.findById(id).orElseThrow(() -> {
             throw new IllegalStateException("car with id " + id + " does not exists! Cannot update.");
         });
 
-        String newBrand = updatedCar.getBrand();
-        if(newBrand != null && newBrand.length() > 0 && !Objects.equals(c.getBrand(), newBrand)) {
+        String newBrand = updatedCar.brand();
+        if(!Objects.equals(c.getBrand(), newBrand)) {
             c.setBrand(newBrand);
         }
 
-        String newModel = updatedCar.getModel();
-        if(newModel != null && newModel.length() > 0 && !Objects.equals(c.getModel(), newModel)) {
+        String newModel = updatedCar.model();
+        if(!Objects.equals(c.getModel(), newModel)) {
             c.setModel(newModel);
         }
 
-        Integer newProductionYear = updatedCar.getProductionYear();
-        if(newProductionYear != null && newProductionYear > 0 && !Objects.equals(c.getProductionYear(), newProductionYear)) {
+        Integer newProductionYear = updatedCar.productionYear();
+        if(!Objects.equals(c.getProductionYear(), newProductionYear)) {
             c.setProductionYear(newProductionYear);
         }
 
-        BigDecimal newActualDailyPrice = updatedCar.getActualDailyPrice();
-        if(newActualDailyPrice != null && !Objects.equals(c.getActualDailyPrice(), newActualDailyPrice)) {
+        BigDecimal newActualDailyPrice = updatedCar.actualDailyPrice();
+        if(!Objects.equals(c.getActualDailyPrice(), newActualDailyPrice)) {
             c.setActualDailyPrice(newActualDailyPrice);
 
             PriceUpdate priceUpdate = new PriceUpdate(null, LocalDateTime.now(), newActualDailyPrice, c);

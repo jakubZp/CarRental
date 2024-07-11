@@ -29,11 +29,9 @@ public class User implements UserDetails {
     private Long id;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonIgnore
     private Customer customer;
 
-    @OneToOne(mappedBy = "user")
-    @JsonIgnore
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Employee employee;
 
     @Column(name = "first_name")

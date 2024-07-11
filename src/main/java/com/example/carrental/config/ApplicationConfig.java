@@ -2,6 +2,7 @@ package com.example.carrental.config;
 
 import com.example.carrental.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +22,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class ApplicationConfig {
 
     private final UserRepository userRepository;
+    @Value("${corsOrigin}")
+    private String corsOrigin;
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -58,7 +61,7 @@ public class ApplicationConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry
                         .addMapping("/api/v1/**")
-                        .allowedOrigins("http://localhost:3000");
+                        .allowedOrigins(corsOrigin);
             }
         };
     }
