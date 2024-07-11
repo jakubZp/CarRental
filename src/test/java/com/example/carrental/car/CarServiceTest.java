@@ -1,12 +1,9 @@
 package com.example.carrental.car;
 
 
-import com.example.carrental.car.Car;
-import com.example.carrental.car.CarRepository;
-import com.example.carrental.car.CarService;
+import com.example.carrental.priceUpdate.PriceUpdate;
 import com.example.carrental.priceUpdate.PriceUpdateRepository;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -26,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -34,6 +32,7 @@ import static org.mockito.Mockito.when;
 class CarServiceTest {
 
     @Mock private CarRepository carRepository;
+    @Mock private CarDTOMapper carDTOMapper;
     @Mock private PriceUpdateRepository priceUpdateRepository;
     @InjectMocks private CarService underTest;
     private final int page = 0;
@@ -44,13 +43,13 @@ class CarServiceTest {
     public void should_getAllCars() {
         // given
         final Page<Car> findAllResult = new PageImpl<>(List.of(Car.builder().build()), pageable, 1);
-        when(carRepository.findAll(Mockito.any(PageRequest.class))).thenReturn(findAllResult);
+        when(carRepository.findAll(any(PageRequest.class))).thenReturn(findAllResult);
 
         // when
         final Page<Car> findCarsResult = underTest.getAllCars(page, pageSize);
 
         // then
-        verify(carRepository).findAll(Mockito.any(PageRequest.class));
+        verify(carRepository).findAll(any(PageRequest.class));
         assertThat(findCarsResult).isEqualTo(findAllResult);
     }
 
@@ -90,8 +89,12 @@ class CarServiceTest {
     @Test
     public void should_addNewCar() {
         // given
-        Car car = new Car(1L, "toyota", "yaris", 2023,
-                  new BigDecimal(100), null, null);
+        CarDTO car = new CarDTO(1L, "toyota", "yaris", 2023,
+                  new BigDecimal(100));
+        Car expected = new Car(1L, "toyota", "yaris", 2023,
+                new BigDecimal(100), null, null);
+        when(carDTOMapper.mapToCar(car)).thenReturn(expected);
+        when(priceUpdateRepository.save(any(PriceUpdate.class))).thenReturn(new PriceUpdate());
 
         // when
         underTest.addCar(car);
@@ -102,18 +105,23 @@ class CarServiceTest {
                 .save(carArgumentCaptor.capture());
 
         Car capturedCar = carArgumentCaptor.getValue();
-        assertThat(capturedCar).isEqualTo(car);
+        assertThat(capturedCar).isEqualTo(expected);
     }
 
     @Test
     public void should_deleteCarById() {
         // given
-        Car car = new Car(1L, "toyota", "yaris", 2023,
+        long carId = 1L;
+        Car car = new Car(carId, "toyota", "yaris", 2023,
                 new BigDecimal(100), null, null);
-        long carId = car.getId();
+        CarDTO carDTO = new CarDTO(carId, "toyota", "yaris", 2023,
+                new BigDecimal(100));
+
+        when(carRepository.save(any(Car.class))).thenReturn(car);
+        when(carDTOMapper.mapToCar(carDTO)).thenReturn(car);
 
         // when
-        underTest.addCar(car);
+        underTest.addCar(carDTO);
         underTest.deleteCar(carId);
 
         // then
@@ -125,25 +133,28 @@ class CarServiceTest {
         // given
         Car car = new Car(1L, "toyota", "yaris", 2023,
                 new BigDecimal(100), null, null);
+        Long carId = car.getId();
 
-        Car updatedCar = new Car(null, "ford", "focus", 2020,
-                new BigDecimal(150), null, null);
+        CarDTO updatedCar = new CarDTO( carId, "ford", "focus", 2020,
+                new BigDecimal(150));
 
-        long carId = car.getId();
         when(carRepository.findById(carId)).thenReturn(Optional.of(car));
 
         // when
         Car result = underTest.updateCar(carId, updatedCar);
 
         // then
-        assertThat(result).isEqualTo(updatedCar);
+        assertThat(result.getBrand()).isEqualTo(updatedCar.brand());
+        assertThat(result.getModel()).isEqualTo(updatedCar.model());
+        assertThat(result.getProductionYear()).isEqualTo(updatedCar.productionYear());
+        assertThat(result.getActualDailyPrice()).isEqualTo(updatedCar.actualDailyPrice());
     }
 
     @Test
     public void should_throwException_whenCarIdForUpdateDoesNotExists() {
         // given
-        Car updatedCar = new Car(null, "ford", "focus", 2020,
-                new BigDecimal(150), null, null);
+        CarDTO updatedCar = new CarDTO(1L, "ford", "focus", 2020,
+                new BigDecimal(150));
         long carId = 4L;
 
         // when

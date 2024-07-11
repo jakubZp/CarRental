@@ -7,6 +7,7 @@ import com.example.carrental.customer.CustomerRepository;
 import com.example.carrental.integrationTestsHelpers.AuthHelper;
 import com.example.carrental.integrationTestsHelpers.EnableTestcontainers;
 import com.example.carrental.user.TokenRepository;
+import com.example.carrental.user.User;
 import com.example.carrental.user.UserRepository;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;

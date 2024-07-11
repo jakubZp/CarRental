@@ -54,12 +54,15 @@ public class RentalService {
             throw new IllegalStateException("car with id " + rentalDTO.carId() + " does not exists.");
         });
 
-        Customer p = customerRepository.findById(rentalDTO.customerId()).orElseThrow(() -> {
+        Customer customer = customerRepository.findById(rentalDTO.customerId()).orElseThrow(() -> {
             throw new IllegalStateException("customer with id " + rentalDTO.customerId() + " does not exists.");
         });
 
         LocalDateTime fromDate = rentalDTO.fromDate();
         LocalDateTime toDate = rentalDTO.toDate();
+        if(fromDate == null || toDate == null) {
+            throw new IllegalStateException("dates cannot be null.");
+        }
         List<Rental> overlappingRentals = rentalRepository.findByCarAndDatesOverlap(c, fromDate, toDate);
         if(!overlappingRentals.isEmpty()) {
             throw new IllegalStateException("the car is already booked for the selected dates.");
@@ -69,9 +72,9 @@ public class RentalService {
             throw new IllegalStateException("from date is after to date.");
         }
 
-        Rental rental = new Rental(null, fromDate, toDate, c, p);
+        Rental rental = new Rental(null, fromDate, toDate, c, customer);
         c.getCarRents().add(rental);
-        p.getCustomerRents().add(rental);
+        customer.getCustomerRents().add(rental);
 
         return rentalRepository.save(rental);
     }

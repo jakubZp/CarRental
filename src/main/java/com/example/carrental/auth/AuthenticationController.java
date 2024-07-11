@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/auth")
-@CrossOrigin(origins = "http://localhost:3000")//TODO should be changed?
+@CrossOrigin(origins = "${corsOrigin}")
 @RequiredArgsConstructor
 public class AuthenticationController {
 
@@ -25,5 +25,4 @@ public class AuthenticationController {
     ) {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
-
 }

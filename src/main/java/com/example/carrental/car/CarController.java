@@ -1,7 +1,7 @@
 package com.example.carrental.car;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -20,18 +20,18 @@ public class CarController {
                              @RequestParam(required = false) Integer pageSize) {
         return carService.getAllCars(page, pageSize)
                 .stream()
-                .map(carDTOMapper)
+                .map(carDTOMapper::mapToDTO)
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
     public CarDTO getSingleCar(@PathVariable long id) {
-        return carDTOMapper.apply(carService.getSingleCar(id));
+        return carDTOMapper.mapToDTO(carService.getSingleCar(id));
     }
 
     @PostMapping
-    public CarDTO addCar(@RequestBody Car car) {//TODO DTO
-        return carDTOMapper.apply(carService.addCar(car));
+    public CarDTO addCar(@Valid @RequestBody CarDTO car) {
+        return carDTOMapper.mapToDTO(carService.addCar(car));
     }
 
     @DeleteMapping("/{id}")//TODO cannot delete car with rentals - document it
@@ -41,8 +41,8 @@ public class CarController {
 
     @PutMapping("/{id}")
     public CarDTO updateCar(@PathVariable long id,
-                          @RequestBody Car updatedCar) {
-        return carDTOMapper.apply(carService.updateCar(id, updatedCar));
+                          @Valid @RequestBody CarDTO updatedCar) {
+        return carDTOMapper.mapToDTO(carService.updateCar(id, updatedCar));
     }
 
     @GetMapping("/{from}/{to}")
@@ -52,7 +52,7 @@ public class CarController {
                                                   @RequestParam(required = false) Integer pageSize) {
         return carService.getAvailableCarsBetweenDates(from, to, page, pageSize)
                 .stream()
-                .map(carDTOMapper)
+                .map(carDTOMapper::mapToDTO)
                 .collect(Collectors.toList());
     }
 }
