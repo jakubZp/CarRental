@@ -1,6 +1,5 @@
-package com.example.carrental.user;
+package com.example.carrental.user.token;
 
-import com.example.carrental.user.Token;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

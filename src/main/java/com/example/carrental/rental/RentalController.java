@@ -1,5 +1,6 @@
 package com.example.carrental.rental;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,12 +17,10 @@ public class RentalController {
 
     @GetMapping()
     public List<RentalDTO> getRentals() {
-        List <RentalDTO> rentals = rentalService.getAllRentals()
+        return rentalService.getAllRentals()
                 .stream()
                 .map(rentalDTOMapper)
                 .collect(Collectors.toList());
-
-        return rentals;
     }
 
     @GetMapping("/{id}")
@@ -32,7 +31,7 @@ public class RentalController {
     }
 
     @PostMapping
-    public RentalDTO addRental(@RequestBody RentalDTO rentalDTO) {
+    public RentalDTO addRental(@Valid @RequestBody RentalDTO rentalDTO) {
         return rentalDTOMapper.apply(rentalService.addRental(rentalDTO));
     }
 
@@ -40,38 +39,4 @@ public class RentalController {
     public void deleteRental(@PathVariable long id) {
         rentalService.deleteRental(id);
     }
-
-//    @GetMapping("/pdf/all")
-//    public void generatePdfForAllRentals(HttpServletResponse response) {
-//
-//        List<Rental> rentals = rentalService.getAllRentals();
-//        reportPDF.generateRentalsReport(rentals, response);
-//    }
-//
-//    @GetMapping("/pdf/{fromDate}/{toDate}")
-//    public void generatePdfForRentalsPeriod(@PathVariable String fromDate,
-//                                            @PathVariable String toDate,
-//                                            HttpServletResponse response) {
-//        LocalDateTime startDate = LocalDateTime.parse(fromDate);
-//        LocalDateTime endDate = LocalDateTime.parse(toDate);
-//        List <Rental> rentals = rentalService.getRentalsBetweenDates(startDate, endDate);
-//        reportPDF.generateRentalsReport(rentals, response);
-//    }
-//
-//    @GetMapping("/excel/all")
-//    public void generateExcelForAllRentals(HttpServletResponse response) {
-//        List<Rental> rentals = rentalService.getAllRentals();
-//        reportExcel.generateRentalsReport(rentals, response);
-//    }
-//
-//    @GetMapping("/excel/{fromDate}/{toDate}")
-//    public void generateExcelForRentalsPeriod(@PathVariable String fromDate,
-//                                              @PathVariable String toDate,
-//                                              HttpServletResponse response) {
-//        LocalDateTime startDate = LocalDateTime.parse(fromDate);
-//        LocalDateTime endDate = LocalDateTime.parse(toDate);
-//        List<Rental> rentals = rentalService.getRentalsBetweenDates(startDate, endDate);
-//        reportExcel.generateRentalsReport(rentals, response);
-//    }
-
 }

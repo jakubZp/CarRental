@@ -8,6 +8,7 @@ import com.example.carrental.priceUpdate.PriceUpdateService;
 import com.example.carrental.user.Role;
 import com.example.carrental.user.User;
 import com.example.carrental.user.UserRepository;
+import com.example.carrental.user.UserStatus;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -52,7 +53,7 @@ class RentalServiceTest {
     @BeforeEach
     void setup() {
         car = new Car(1L, "toyota", "yaris", 2023, new BigDecimal(100), new ArrayList<>(), null);
-        user = new User(1L, null, null, "Tom", "Smith", "123456789", "Warsaw", "tom@gmail.com", "zaq1", Role.CUSTOMER, null);
+        user = new User(1L, null, null, "Tom", "Smith", "123456789", "Warsaw", "tom@gmail.com", "zaq1", Role.CUSTOMER, null, UserStatus.ACTIVE);
         customer = Customer.builder()
                         .user(user)
                         .customerRents(new ArrayList<>())

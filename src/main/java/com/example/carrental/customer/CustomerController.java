@@ -1,7 +1,6 @@
 package com.example.carrental.customer;
 
-import com.example.carrental.customer.Customer;
-import com.example.carrental.customer.CustomerService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,18 +18,13 @@ public class CustomerController {
     public List<CustomerDTO> getAllCustomers() {
         return customerService.getAllCustomers()
                 .stream()
-                .map(customerDTOMapper)
+                .map(customerDTOMapper::mapToDTO)
                 .collect(Collectors.toList());
     }
 
     @GetMapping("{id}")
     public CustomerDTO getSingleCustomer(@PathVariable long id) {
-        return customerDTOMapper.apply(customerService.getSingleCustomer(id));
-    }
-
-    @PostMapping
-    public CustomerDTO addCustomer(@RequestBody Customer customer) {
-        return customerDTOMapper.apply(customerService.addCustomer(customer));
+        return customerDTOMapper.mapToDTO(customerService.getSingleCustomer(id));
     }
 
     @DeleteMapping("{id}")
@@ -40,7 +34,7 @@ public class CustomerController {
 
     @PutMapping("{id}")
     public CustomerDTO updateCustomer(@PathVariable long id,
-                                 @RequestBody Customer updatedCustomer) {
-        return customerDTOMapper.apply(customerService.updateCustomer(id, updatedCustomer));
+                                 @Valid @RequestBody CustomerDTO updatedCustomer) {
+        return customerDTOMapper.mapToDTO(customerService.updateCustomer(id, updatedCustomer));
     }
 }

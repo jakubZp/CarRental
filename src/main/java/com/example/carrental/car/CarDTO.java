@@ -17,6 +17,6 @@ public record CarDTO(
         @NotNull(message = "productionYear cannot be null")
         Integer productionYear,
         @NotNull(message = "actualDailyPrice cannot be null")
-        @Positive(message = "Actual daily price must be positive")
+        @Positive(message = "actual daily price must be positive")
         BigDecimal actualDailyPrice) {
 }

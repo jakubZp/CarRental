@@ -1,5 +1,7 @@
 package com.example.carrental.config;
 
+import com.example.carrental.config.filters.ActiveStatusFilter;
+import com.example.carrental.config.filters.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +22,7 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 public class SecurityConfiguration {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
+    private final ActiveStatusFilter activeStatusFilter;
     private final AuthenticationProvider authenticationProvider;
     private final LogoutHandler logoutHandler;
     public static final String[] PUBLIC_PATHS = {"/api/v1/auth/**",
@@ -47,6 +50,7 @@ public class SecurityConfiguration {
                 .and()
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(activeStatusFilter, JwtAuthenticationFilter.class)
                 .logout()
                 .logoutUrl("/api/v1/auth/logout")
                 .addLogoutHandler(logoutHandler)

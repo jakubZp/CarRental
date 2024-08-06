@@ -4,8 +4,8 @@ import com.example.carrental.car.Car;
 import com.example.carrental.customer.Customer;
 import com.example.carrental.car.CarRepository;
 import com.example.carrental.customer.CustomerRepository;
+import com.example.carrental.user.UserStatus;
 import com.example.carrental.priceUpdate.PriceUpdateService;
-import com.example.carrental.user.Role;
 import com.example.carrental.user.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,7 +21,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -57,6 +56,10 @@ public class RentalService {
         Customer customer = customerRepository.findById(rentalDTO.customerId()).orElseThrow(() -> {
             throw new IllegalStateException("customer with id " + rentalDTO.customerId() + " does not exists.");
         });
+
+        if (customer.getUser().getStatus() != UserStatus.ACTIVE) {
+            throw new IllegalStateException("cannot create rental for inactive customer.");
+        }
 
         LocalDateTime fromDate = rentalDTO.fromDate();
         LocalDateTime toDate = rentalDTO.toDate();

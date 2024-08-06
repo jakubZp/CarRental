@@ -37,6 +37,8 @@ INSERT INTO customer (user_id) VALUES (5);
 INSERT INTO _user (first_name, last_name, phone_number, address, email, password, role) values ('Jakub', 'Creighton', '666123009', 'Warszawa, Niepodległości 32', 'jakub.creighton@carrental.com', crypt('jakub', gen_salt('bf')), 'EMPLOYEE');
 INSERT INTO employee (user_id, employed_from, salary) values (6, '2023-06-24', 4000);
 
+INSERT INTO _user (first_name, last_name, phone_number, address, email, password, role) values ('Admin', 'Admin', '983919000', 'Warszawa, Marszałkowska 21', 'admin@carrental.com', crypt('admin', gen_salt('bf')), 'ADMIN');
+
 INSERT INTO rental (from_date, to_date, car_id, customer_id) values ('2023-03-19 10:00', '2023-03-27 10:00', 1, 1);
 INSERT INTO rental (from_date, to_date, car_id, customer_id) values ('2023-03-29 10:00', '2023-04-04 10:00', 1, 5);
 INSERT INTO rental (from_date, to_date, car_id, customer_id) values ('2023-04-08 07:00', '2023-04-14 14:00', 1, 2);

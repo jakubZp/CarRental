@@ -1,5 +1,9 @@
 package com.example.carrental.customer;
 
-record CustomerDTO(Long customerId,
-                   Long userId) {
+import com.example.carrental.user.UserDTOPost;
+import jakarta.validation.Valid;
+
+public record CustomerDTO(
+        Long customerId,
+        @Valid UserDTOPost userDTO) {
 }

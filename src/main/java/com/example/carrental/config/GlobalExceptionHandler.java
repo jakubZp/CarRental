@@ -3,6 +3,7 @@ package com.example.carrental.config;
 import com.example.carrental.exceptions.CannotFindPriceException;
 import com.example.carrental.exceptions.DateNotValidException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;

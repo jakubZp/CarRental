@@ -1,6 +1,7 @@
-package com.example.carrental.config;
+package com.example.carrental.config.filters;
 
-import com.example.carrental.user.TokenRepository;
+import com.example.carrental.config.services.JwtService;
+import com.example.carrental.user.token.TokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

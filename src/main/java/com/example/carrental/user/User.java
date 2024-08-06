@@ -2,7 +2,7 @@ package com.example.carrental.user;
 
 import com.example.carrental.customer.Customer;
 import com.example.carrental.employee.Employee;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example.carrental.user.token.Token;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -50,11 +50,15 @@ public class User implements UserDetails {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "varchar(40) default 'CUSTOMER'") // TODO change it?
+    @Column(columnDefinition = "varchar(30) default 'CUSTOMER'") // TODO change it?
     private Role role;
 
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
+
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(30) DEFAULT 'ACTIVE'")
+    private UserStatus status = UserStatus.ACTIVE;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -87,6 +91,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return status == UserStatus.ACTIVE;
     }
 }
