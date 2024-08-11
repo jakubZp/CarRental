@@ -12,8 +12,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -25,6 +27,7 @@ public class SecurityConfiguration {
     private final ActiveStatusFilter activeStatusFilter;
     private final AuthenticationProvider authenticationProvider;
     private final LogoutHandler logoutHandler;
+    private final CorsConfigurationSource corsConfigurationSource;
     public static final String[] PUBLIC_PATHS = {"/api/v1/auth/**",
             "/api/v1/cars/**",
             "/swagger-ui/**",
@@ -32,9 +35,9 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .cors()
-                .and()
+        http//TODO
+                .cors(c -> c.configurationSource(corsConfigurationSource))
+                .exceptionHandling(customizer -> customizer.authenticationEntryPoint(new Http403ForbiddenEntryPoint()))
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
