@@ -2,7 +2,7 @@ package com.example.carrental.customer;
 
 import com.example.carrental.user.User;
 import com.example.carrental.rental.Rental;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example.carrental.user.UserStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,6 +23,6 @@ public class Customer {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer")
     public List<Rental> customerRents;
 }

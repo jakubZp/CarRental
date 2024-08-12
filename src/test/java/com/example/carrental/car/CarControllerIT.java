@@ -3,11 +3,11 @@ package com.example.carrental.car;
 import com.example.carrental.integrationTestsHelpers.AuthHelper;
 import com.example.carrental.integrationTestsHelpers.EnableTestcontainers;
 import com.example.carrental.priceUpdate.PriceUpdateRepository;
+import com.example.carrental.user.token.TokenRepository;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,6 +32,8 @@ public class CarControllerIT {
     CarRepository carRepository;
     @Autowired
     PriceUpdateRepository priceUpdateRepository;
+    @Autowired
+    TokenRepository tokenRepository;
 
     @BeforeEach
     void setUp() {
@@ -42,6 +44,7 @@ public class CarControllerIT {
     void tearDown() {
         priceUpdateRepository.deleteAll();
         carRepository.deleteAll();
+        tokenRepository.deleteAll();
     }
 
     @Test

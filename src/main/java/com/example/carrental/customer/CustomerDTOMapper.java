@@ -1,16 +1,19 @@
 package com.example.carrental.customer;
 
+import com.example.carrental.user.UserDTOMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.function.Function;
-
 @Service
-public class CustomerDTOMapper implements Function<Customer, CustomerDTO> {
-    @Override
-    public CustomerDTO apply(Customer customer) {
+@RequiredArgsConstructor
+public class CustomerDTOMapper {
+
+    private final UserDTOMapper userDTOMapper;
+
+    public CustomerDTO mapToDTO(Customer customer) {
         return new CustomerDTO(
                 customer.getId(),
-                customer.getUser().getId()
+                userDTOMapper.mapToDTOPost(customer.getUser())
         );
     }
 }

@@ -1,6 +1,7 @@
 package com.example.carrental.priceUpdate;
 
 import com.example.carrental.exceptions.CannotFindPriceException;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,7 +34,7 @@ public class PriceUpdateController {
 
     @PreAuthorize("hasAuthority('EMPLOYEE')")
     @PostMapping
-    public PriceUpdate addPriceUpdate(@RequestBody PriceUpdateDTO priceUpdate) {
+    public PriceUpdate addPriceUpdate(@Valid @RequestBody PriceUpdateDTO priceUpdate) {
         return priceUpdateService.addPriceUpdate(priceUpdate);
     }
 

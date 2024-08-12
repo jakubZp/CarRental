@@ -1,5 +1,6 @@
-package com.example.carrental.user;
+package com.example.carrental.user.token;
 
+import com.example.carrental.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

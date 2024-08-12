@@ -1,6 +1,6 @@
-package com.example.carrental.config;
+package com.example.carrental.config.services;
 
-import com.example.carrental.user.TokenRepository;
+import com.example.carrental.user.token.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.example.carrental.config;
+package com.example.carrental.config.services;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwt;
